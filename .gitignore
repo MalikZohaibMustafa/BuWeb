@@ -1,0 +1,13 @@
+*.dbmdl
+*.jfm
+*.user
+*.suo
+.vs/
+*/bin/
+*/obj/
+**/node_modules/
+Bu.Web/Bu.Web.Website/wwwroot/lib/
+Bu.Web/Bu.Web.Website/wwwroot/bundles/
+Bu.Web/Bu.Web.Admin/wwwroot/lib/
+*.css
+*.lutconfig
