@@ -1,0 +1,39 @@
+﻿@using Bu.Web.Data.CustomEntities;
+@model Area
+@inject IWebsiteCachedContext CachedContext
+@{
+    CarouselItem[] items = this.CachedContext.AreaCarouselItemLookup[this.Model.AreaId].ToArray();
+}
+
+@if (items.Any())
+{
+    <div id="mainCarousel" class="carousel slide">
+        <div class="carousel-indicators">
+            @for (int i = 0; i < items.Length; i++)
+            {
+                CarouselItem item = items[i];
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="@i" class="@(i==0?"active":"")" aria-current="@(i==0)" aria-label="@item.ArticleName"></button>
+            }
+        </div>
+        <div class="carousel-inner">
+            @for (int i = 0; i < items.Length; i++)
+            {
+                CarouselItem item = items[i];
+                <div class="carousel-item@(i==0?" active":"")">
+                    <img class="d-block w-100" alt="@item.ArticleName" src="@(this.Url.Content(ArticleDetail.GetArticleCarouselMediaUrlWithTilde(item.AreaPath, item.ArticleType, item.ArticleUniqueId)))" />
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>@item.ArticleName</h5>
+                    </div>
+                </div>
+            }
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+}

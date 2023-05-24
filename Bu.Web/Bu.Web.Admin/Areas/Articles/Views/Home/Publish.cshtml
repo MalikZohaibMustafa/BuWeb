@@ -1,0 +1,21 @@
+﻿@model ArticleDetail
+@{
+    this.ViewData["Title"] = "Publish Article";
+    this.ViewData["Icon"] = "bi bi-journal";
+}
+
+<fieldset disabled>
+    <partial name="_ArticleDetailFields" model="@this.Model" />
+</fieldset>
+<div class="mt-3 col text-center">
+    <form method="post" asp-area="Articles" asp-controller="Home" asp-action="PublishPost" asp-route-id="@this.Model.ArticleDetailId">
+        <button type="submit" class="btn btn-danger">Publish</button>
+        @if (this.Model.Published.IsPending)
+        {
+            <a asp-action="Edit" asp-controller="Home" asp-area="Articles" asp-route-id="@this.Model.Id" class="btn btn-secondary">
+                <i class="bi bi-pencil"></i> Edit
+            </a>
+        }
+        <a asp-action="Display" asp-controller="Home" asp-area="Articles" asp-route-id="@this.Model.ArticleDetailId" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <RootNamespace>Bu.Web.Common</RootNamespace>
+    </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Markdig.Signed" Version="0.31.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bu.Web.Data\Bu.Web.Data.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,11 @@
+﻿@model (string? Subject, string? Body)
+
+<p>Contact Information:</p>
+<ul>
+    <li>
+        <a href="mailto:@(AboutSystem.SupportEmail)?Subject=@AboutSystem.SystemName - @this.Model.Subject&Body=@this.Model.Body">@AboutSystem.SupportEmail</a>
+    </li>
+    <li>
+        <a href="tel:@(AboutSystem.SupportPhone)">@AboutSystem.SupportPhone</a>
+    </li>
+</ul>

@@ -1,0 +1,85 @@
+﻿@using Serilog.Events
+@using Bu.Web.Admin.Areas.Admin.Models.EventLogs
+@model Bu.Web.Admin.Areas.Admin.Models.EventLogs.ListModel
+@{
+    this.ViewData["Title"] = "Event Logs";
+    this.ViewData["Icon"] = "bi bi-clock-history";
+}
+
+<form method="get" autocomplete="off" asp-area="Admin" asp-controller="EventLogs" asp-action="Index">
+    @this.Html.RenderBootstrapValidationSummary()
+    <input type="hidden" asp-for="@this.Model.Input.PageIndex"/>
+    <input type="hidden" asp-for="@this.Model.Input.PageSize"/>
+    <input type="hidden" asp-for="@this.Model.Input.Sort"/>
+    <input type="hidden" asp-for="@this.Model.Input.Desc"/>
+    <div class="row g-3 mb-3">
+        <div class="col-md-4 col-lg-4 col-xl-auto">
+            <div class="row">
+                <label asp-for="@this.Model.Input.SourceApplication" class="col-md-12 col-lg-auto col-form-label"></label>
+                <div class="col-md-12 col-lg col-xl-auto">
+                    <select class="form-select" asp-for="@this.Model.Input.SourceApplication" asp-items="Html.GetEnumSelectList<EventLog.SourceApplications>()">
+                        <option value="">All</option>
+                    </select>
+                    <span asp-validation-for="@this.Model.Input.SourceApplication"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-4 col-xl-auto">
+            <div class="row">
+                <label asp-for="@this.Model.Input.Level" class="col-md-12 col-lg-auto col-form-label"></label>
+                <div class="col-md-12 col-lg col-xl-auto">
+                    <select class="form-select" asp-for="@this.Model.Input.Level" asp-items="Html.GetEnumSelectList<LogEventLevel>()">
+                        <option value="">All</option>
+                    </select>
+                    <span asp-validation-for="@this.Model.Input.Level"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-4 col-xl-auto">
+           <div class="row">
+                <label asp-for="@this.Model.Input.From" class="col-md-12 col-lg-auto col-form-label"></label>
+               <div class="col-md-12 col-lg col-xl-auto">
+                    <input type="date" class="form-control" asp-for="@this.Model.Input.From" />
+                    <span asp-validation-for="@this.Model.Input.From"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-4 col-xl-auto">
+            <div class="row">
+                <label asp-for="@this.Model.Input.To" class="col-md-12 col-lg-auto col-form-label"></label>
+                <div class="col-md-12 col-lg col-xl-auto">
+                    <input type="date" class="form-control" asp-for="@this.Model.Input.To" />
+                    <span asp-validation-for="@this.Model.Input.To"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-4 col-xl-auto mt-md-auto">
+            <button class="btn btn-secondary w-100"><i class="bi bi-search"></i> Search</button>
+        </div>
+    </div>
+</form>
+
+@this.Html.RenderBootstrapTable(this.Model.Input, new BootstrapTable<EventLog, ListInputModel>(this.Model.PageData)
+{
+    Head = @<tr>
+               @this.Html.RenderTableHeader("Id", nameof(EventLog.EventLogId), this.Model.Input, cssClass: "text-nowrap")
+               @this.Html.RenderTableHeader("Event Date", nameof(EventLog.Timestamp), this.Model.Input, cssClass: "text-nowrap")
+               <th>Application</th>
+               <th>Level</th>
+               <th>Message</th>
+           </tr>,
+    Body = @<tr class="@this.Model.GetCssClass(item.Data.Level)">
+               <td>@item.Data.EventLogId</td>
+               <td>
+                   <a asp-area="Admin" asp-controller="EventLogs" asp-action="Display" asp-route-id="@item.Data.EventLogId">
+                       @item.Data.Timestamp.ToUserDateTimeOffset(this.User).DateTime
+                   </a>
+               </td>
+               <td>@item.Data.SourceApplication</td>
+               <td>@item.Data.Level</td>
+               <td>@item.Data.Message</td>
+           </tr>,
+    EmptyRow = @<tr>
+                   <td colspan="3">No record found.</td>
+               </tr>,
+})

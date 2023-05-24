@@ -1,0 +1,31 @@
+/*
+    This is a configuration file for the SwitchStartupProject Visual Studio Extension
+    See https://heptapod.host/thirteen/switchstartupproject/blob/branch/current/Configuration.md
+*/
+{
+  "Version": 3,
+  "ListAllProjects": false,
+  "MultiProjectConfigurations": {
+    "Web+Admin": {
+      "Projects": {
+        "Bu.Web.Admin": {},
+        "Bu.Web.Website": {}
+      }
+    },
+    "Bu.Web.Admin": {
+      "Projects": {
+        "Bu.Web.Admin": {}
+      }
+    },
+    "Bu.Web.Website": {
+      "Projects": {
+        "Bu.Web.Website": {}
+      }
+    },
+    "Bu.Web.TestData": {
+      "Projects": {
+        "Bu.Web.TestData": {}
+      }
+    }
+  },
+}

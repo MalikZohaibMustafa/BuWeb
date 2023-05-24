@@ -1,0 +1,10 @@
+﻿@model Bu.Web.Data.Entities.ArticlePage
+@{
+    Layout = this.Model.ArticleDetail!.AreaLayout!.LayoutPath;
+}
+@Common.RenderingEngine.Render(this.Html, this.Model)
+
+@section LeftMenu
+{
+    @Common.RenderingEngine.RenderMenu(this.Url, this.Model)
+}

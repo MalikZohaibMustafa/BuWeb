@@ -1,0 +1,49 @@
+﻿@import "_variables";
+
+div[top-main-menu-bar] {
+    background-color: #{$top-main-menu-bar-bg-color};
+    border-bottom: 2px solid #{$top-bar-links-bg-color};
+    --tab-bg-color: #{$top-main-menu-bar-bg-color};
+    --tab-bg-color-hover: #FFFFFF;
+    --tab-color: #FFFFFF;
+    --tab-color-hover: #{$top-main-menu-bar-bg-color};
+
+    ul.navbar-nav {
+        > li {
+            > a {
+                background-color: var(--tab-bg-color);
+                color: var(--tab-color);
+
+                &.show {
+                    background-color: var(--tab-bg-color-hover);
+                    color: var(--tab-color-hover);
+                }
+            }
+
+            &:hover {
+                > a {
+                    background-color: var(--tab-bg-color-hover);
+                    color: var(--tab-color-hover);
+                }
+            }
+
+            li.dropend { // disabling the click effect on opening submenu.
+                a.dropdown-item.dropdown-toggle.active, a.dropdown-item.dropdown-toggle:active {
+                    color: var(--bs-dropdown-link-color);
+                    background-color: var(--bs-dropdown-link-bg);
+                }
+
+                &:hover {
+                    a.dropdown-item.dropdown-toggle.active, a.dropdown-item.dropdown-toggle:active {
+                        color: var(--bs-dropdown-link-hover-color);
+                        background-color: var(--bs-dropdown-link-hover-bg);
+                    }
+                }
+
+                ul {
+                    top: calc(var(--bs-dropdown-padding-y) * -1);
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,33 @@
+﻿@model Bu.Web.Website.Models.TopBarLinks
+@if (this.Model.SearchEnabled || this.Model.Buttons.Any() || this.Model.Links.Any())
+{
+    <div top-bar-links class="d-flex flex-row align-items-center py-1 small">
+        <div class="flex-grow-0 d-flex justify-content-start align-items-center ms-2">
+            @foreach (var link in this.Model.Buttons)
+            {
+                <a class="btn btn-sm btn-secondary mx-1" href="@Href(link.NavigateUrl)" target="@link.Target">@Html.Raw(link.InnerHtml)</a>
+            }
+        </div>
+        <div class="flex-grow-0 d-flex justify-content-start align-items-center mx-2 mt-1">
+            <nav style="--bs-breadcrumb-divider: '|';" aria-label="breadcrumb">
+                <ol class="breadcrumb m-0">
+                    @foreach (var link in this.Model.Links)
+                    {
+                        <li class="breadcrumb-item">
+                            <a href="@Href(link.NavigateUrl)" class="text-decoration-none" target="@link.Target">@Html.Raw(link.InnerHtml)</a>
+                        </li>
+                    }
+                </ol>
+            </nav>
+        </div>
+        <div class="flex-grow-1 d-flex justify-content-end align-items-center me-2">
+            @if (this.Model.SearchEnabled)
+            {
+                <button type="button" title="Search" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#googleSearchModal">
+                    <i class="bi bi-search"></i>
+                </button>
+                <partial name="_GoogleSearch" />
+            }
+        </div>
+    </div>
+}

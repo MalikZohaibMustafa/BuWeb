@@ -1,0 +1,24 @@
+﻿@model SecondaryMenuBarLinks
+
+<div class="d-flex flex-row align-items-center py-1 bg-white">
+    @if (this.Model.HeaderLink != null)
+    {
+        <div class="flex-grow-0 d-flex justify-content-start align-items-center ms-2">
+            <a class="btn btn-sm btn-dark mx-1" href="@Href(this.Model.HeaderLink.NavigateUrl)" target="@this.Model.HeaderLink.Target">@Html.Raw(this.Model.HeaderLink.InnerHtml)</a>
+        </div>
+    }
+    <div class="flex-grow-0 d-flex justify-content-start align-items-center mx-2 mt-1">
+        <nav style="--bs-breadcrumb-divider: '|';" aria-label="breadcrumb">
+            <ol class="breadcrumb m-0">
+                @foreach (var link in this.Model.Links)
+                {
+                    <li class="breadcrumb-item">
+                        @*TODO Nested Drop Down Menu Support*@
+                        <a href="@Href(link.NavigateUrl)" class="text-decoration-none text-dark" target="@link.Target">@Html.Raw(link.InnerHtml)</a>
+                    </li>
+                }
+            </ol>
+        </nav>
+    </div>
+
+</div>

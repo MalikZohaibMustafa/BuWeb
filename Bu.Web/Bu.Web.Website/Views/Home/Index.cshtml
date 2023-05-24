@@ -1,0 +1,45 @@
+﻿@inject IWebsiteCachedContext CachedContext
+@inject IWebsiteFixedContext FixedContext
+@{
+    Area area = FixedContext.GetRootArea((int)InstituteIds.Buho);
+}
+
+@await this.Html.PartialAsync("_MainCarousel", area)
+
+<div class="row p-3 my-3">
+    <div class="col-md-3 px-4">
+        <h4 class="line-bottom">Welcome to Bahria University</h4>
+        <p class="text-justify">
+            Bahria University is a Federally Chartered Public Sector University. The principal seat of Bahria University
+            is at Islamabad and campuses are at Islamabad, Karachi and Lahore. Bahria University was established by the
+            Pakistan Navy in 2000, and since then it has steadily grown into one of the leading higher education institutions
+            in Pakistan. It plays a major role in grooming future leaders who can make a positive difference to the world around them.
+            Bahria is a comprehensive university having multidisciplinary programs that includes Health Sciences, Engineering Sciences,
+            Computer Sciences, Management Sciences, Social Sciences, Law, Earth and Environmental Sciences, Psychology and Maritime Studies.
+        </p>
+    </div>
+    <div class="col-md-9 px-4">
+        <div class="row row-cols-sm-2 row-cols-lg-3 g-4">
+            @foreach (var institute in this.FixedContext.InstitutesList.Where(i => i.InstituteId != default).OrderBy(i => i.InstituteId))
+            {
+                <div class="col">
+                    @{
+                        Area instituteArea = this.FixedContext.GetRootArea(institute.Id);
+                    }
+                    <a href="@this.Url.Content(instituteArea.AreaPathWithTilde)" target="@instituteArea.AreaName">
+                        <div class="card h-100">
+                            <img src="@(this.Url.Content($"~/images/Home/{instituteArea.Name}.png"))" class="card-img-top" alt="@institute.ShortName">
+                            <div class="card-body">
+                                <h5 class="card-title">@institute.ShortName</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@await this.Html.PartialAsync("_ActivitiesAndAnnouncementSection", area)
+@await this.Html.PartialAsync("_Recognition&Accreditation", area)
+@await this.Html.PartialAsync("_Documentary", area)

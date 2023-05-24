@@ -1,0 +1,93 @@
+﻿@model IEnumerable<NestedLink>
+
+@functions {
+
+    void RenderTab(NestedLink tab, int tabIndex)
+    {
+        @if (tab.ChildLinks.Any())
+        {
+            <li class="nav-item rounded mb-0 dropdown me-1">
+                <a class="nav-link rounded dropdown-toggle" href="#" id="@($"aTopMainMenuTab{tabIndex}")" data-bs-auto-close="outside" data-bs-toggle="dropdown">
+                    @Html.Raw(tab.InnerHtml)
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="@($"aTopMainMenuTab{tabIndex}")">
+                    @{
+                        int linkIndex = 0;
+                    }
+                    @foreach (NestedLink link in tab.ChildLinks)
+                    {
+                        RenderLink(link, tabIndex, linkIndex++);
+                    }
+                </ul>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item mb-0 rounded me-1">
+                <a class="nav-link rounded" target="@tab.Target" href="@this.Url.Content(tab.NavigateUrl)">@this.Html.Raw(tab.InnerHtml)</a>
+            </li>
+        }
+    }
+
+    void RenderLink(NestedLink link, int tabIndex, int linkIndex)
+    {
+        @if (link.ChildLinks.Any())
+        {
+            <li class="dropend">
+                <a class="dropdown-item dropdown-toggle" href="#" id="@($"aTopMainMenuLink{tabIndex}-{linkIndex}")" data-bs-toggle="dropdown">
+                    @Html.Raw(link.InnerHtml)
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="@($"aTopMainMenuLink{tabIndex}-{linkIndex}")">
+                    @foreach (NestedLink subLink in link.ChildLinks)
+                    {
+                        RenderSubLink(subLink);
+                    }
+                </ul>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a class="dropdown-item" target="@link.Target" href="@this.Url.Content(link.NavigateUrl)">@Html.Raw(link.InnerHtml)</a>
+            </li>
+        }
+    }
+
+    void RenderSubLink(NestedLink subLink)
+    {
+        <li>
+            <a class="dropdown-item" target="@subLink.Target" href="@this.Url.Content(subLink.NavigateUrl)">@Html.Raw(subLink.InnerHtml)</a>
+        </li>
+    }
+
+    void RenderMenu()
+    {
+        <div top-main-menu-bar>
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topMainMenu" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon">
+                        </span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="topMainMenu">
+                        <ul class="navbar-nav">
+                            @{
+                                int tabIndex = 0;
+                            }
+                            @foreach (NestedLink tab in this.Model)
+                            {
+                                RenderTab(tab, tabIndex++);
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    }
+
+}
+
+@if (this.Model.Any())
+{
+    RenderMenu();
+}

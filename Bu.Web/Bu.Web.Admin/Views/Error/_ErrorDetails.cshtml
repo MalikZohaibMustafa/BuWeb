@@ -1,0 +1,27 @@
+﻿@model (string? TargetUrl, string? HttpStatusCodeString, string? RequestId)
+@inject Nonce Nonce
+
+<p>Details:</p>
+<ul>
+    @if (!string.IsNullOrWhiteSpace(this.Model.RequestId))
+    {
+        <li>Request Id: @this.Model.RequestId</li>
+    }
+    @if (!string.IsNullOrWhiteSpace(this.User.Identity?.Name))
+    {
+        <li>User: @this.User.Identity.Name</li>
+    }
+    @if (!string.IsNullOrWhiteSpace(this.Model.TargetUrl))
+    {
+        <li>URL: @this.Model.TargetUrl</li>
+    }
+    @if (!string.IsNullOrWhiteSpace(this.Model.HttpStatusCodeString))
+    {
+        <li>Status Code: @this.Model.HttpStatusCodeString</li>
+    }
+    <li>Current URL: <span id="current-url"></span></li>
+    <li>Date: @DateTimeOffset.Now.ToString("O")</li>
+</ul>
+<script type="text/javascript" nonce="@this.Nonce.Value">
+    document.getElementById("current-url").innerHTML = window.location;
+</script>

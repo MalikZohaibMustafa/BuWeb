@@ -1,0 +1,51 @@
+﻿@model (string text, string textAreaId,  RichTextFormats Format)
+@inject Nonce Nonce
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.27.0/min/vs/loader.min.js" integrity="sha512-SExj71Cw3B9C9EE8BC/ad3AKia5zQXDj/2SM4THgkeKh5GIFZhKM/R3uclUG8YZwJrjcVhydAlIHmfNvsBCKZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript" nonce="@this.Nonce.Value">
+    //require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.27.0/min/vs' } });
+    //require(['vs/editor/editor.main'], function () {
+    //    let theme = "vs";
+    //    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    //        theme = "vs-dark";
+    //    }
+    //    const code = "# Document Header\n\nEnter some text, submit the form with Ctrl-s or Cmd-s shortcut.";
+    //    const language = '@this.Model.Format.ToString().ToLower()';
+
+    //    window.editor = monaco.editor.create(document.getElementById('@this.Model.textAreaId'), {
+    //        value: code,
+    //        language: language,
+    //        lineNumbers: "on",
+    //        wordWrap: "bounded",
+    //        wordWrapColumn: 100,
+    //        wrappingIndent: "same",
+    //        fontSize: 14,
+    //        roundedSelection: false,
+    //        scrollBeyondLastLine: false,
+    //        quickSuggestions: false,
+    //        minimap: { enabled: false },
+    //        theme: theme,
+    //    });
+
+    //    window.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, function () {
+    //        var inp = document.getElementById('text');
+    //        inp.value = window.editor.getValue();
+    //        // document.forms['MyForm'].submit();
+    //        alert('Pretending to submit your form!');
+    //    });
+
+    //    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+    //        if (e.matches) {
+    //            monaco.editor.setTheme("vs-dark");
+    //        } else {
+    //            monaco.editor.setTheme("vs");
+    //        }
+    //    })
+
+    //    const divElem = document.getElementById('editor');
+    //    const resizeObserver = new ResizeObserver(entries => {
+    //        window.editor.layout();
+    //    });
+    //    resizeObserver.observe(divElem);
+    //});
+</script>

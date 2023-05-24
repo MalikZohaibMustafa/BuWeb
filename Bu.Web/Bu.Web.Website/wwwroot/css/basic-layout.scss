@@ -1,0 +1,15 @@
+﻿@import "_variables";
+
+div[basic-layout-container] {
+    overflow-x: hidden;
+
+    > div[basic-layout-header] {
+    }
+
+    > div[basic-layout-body] {
+    }
+
+    > div[basic-layout-footer] {
+        background-color: $copyrights-bg-color;
+    }
+}

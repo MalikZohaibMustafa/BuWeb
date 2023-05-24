@@ -1,0 +1,10 @@
+﻿@import "variables";
+
+div[bu-layout-footer] {
+    background-image: $footer-texture-bg-image !important;
+    --bs-dark-rgb: #{$footer-texture-bg-color};
+
+    .list-group-item {
+        border-style: dashed !important;
+    }
+}

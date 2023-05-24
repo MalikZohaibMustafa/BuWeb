@@ -1,0 +1,21 @@
+﻿@model Bu.Web.Admin.Areas.Admin.Models.Users.UserInputModel
+@{
+    this.ViewData["Title"] = "User";
+    this.ViewData["Icon"] = "bi bi-person";
+}
+
+<fieldset disabled>
+    <partial name="_UserFields" model="@this.Model"/>
+</fieldset>
+<div class="mt-3 col text-center">
+    <a asp-action="Delete" asp-controller="Users" asp-area="Admin" asp-route-id="@this.Model.UserId" class="btn btn-secondary">
+        <i class="bi bi-trash"></i> Delete
+    </a>
+    <a asp-action="Edit" asp-controller="Users" asp-area="Admin" asp-route-id="@this.Model.UserId" class="btn btn-secondary">
+        <i class="bi bi-pencil"></i> Edit
+    </a>
+    <a asp-action="Areas" asp-controller="Users" asp-area="Admin" asp-route-id="@this.Model.UserId" class="btn btn-secondary">
+        <i class="bi bi-pencil"></i> Areas
+    </a>
+    <a asp-action="Index" asp-controller="Users" asp-area="Admin" class="btn btn-secondary">Cancel</a>
+</div>

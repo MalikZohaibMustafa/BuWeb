@@ -1,0 +1,80 @@
+﻿@model ArticleMedia
+@inject IAdminCachedContext AdminCachedContext
+@inject IAdminFixedContext AdminFixedContext
+@{
+    bool published = this.Model.ArticleDetail!.Published.IsPublished;
+    bool readOnly = published;
+    bool disabled = published;
+}
+
+<input asp-for="ArticleDetailId" type="hidden" />
+<input asp-for="ArticleMediaId" type="hidden" />
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="MediaContentType" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xxl-10">
+                <select disabled="@disabled" asp-for="MediaContentType" class="form-select" autofocus asp-items="@this.AdminFixedContext.GetListItems<ContentTypes>(true)"></select>
+                <span asp-validation-for="MediaContentType"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="MediaContentDisposition" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xxl-10">
+                <select disabled="@disabled" asp-for="MediaContentDisposition" class="form-select" autofocus asp-items="@this.AdminFixedContext.GetListItems<ContentDisposition>(true)"></select>
+                <span asp-validation-for="MediaContentDisposition"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="MediaFileName" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xxl-10">
+                <input readonly="@readOnly" asp-for="MediaFileName" class="form-control">
+                <span asp-validation-for="MediaFileName"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="MediaUniqueId" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xxl-10">
+                <input readonly="@readOnly" asp-for="MediaUniqueId" class="form-control">
+                <span asp-validation-for="MediaUniqueId"></span>
+            </div>
+        </div>
+    </div>
+    @if (this.Model.ArticleMediaId != default)
+    {
+        <div class="col-md-6">
+            <div class="row">
+                <label asp-for="CreatedByUserId" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+                <div class="col-md-12 col-lg-9 col-xxl-10">
+                    <input type="text" readonly asp-for="CreatedByUserId" value="@this.AdminCachedContext.GetUserInfo(this.Model.CreatedByUserId, this.Model.CreatedOnUser)" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label asp-for="LastUpdatedByUserId" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+                <div class="col-md-12 col-lg-9 col-xxl-10">
+                    <input type="text" readonly asp-for="LastUpdatedByUserId" value="@this.AdminCachedContext.GetUserInfo(this.Model.LastUpdatedByUserId, this.Model.LastUpdatedOnUser)" class="form-control">
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-6">
+            <div class="row">
+                <label asp-for="FormFile" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+                <div class="col-md-12 col-lg-9 col-xxl-10">
+                    <input readonly="@readOnly" asp-for="FormFile" class="form-control">
+                    <span asp-validation-for="FormFile"></span>
+                </div>
+            </div>
+        </div>
+    }
+</div>

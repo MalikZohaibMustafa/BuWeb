@@ -1,0 +1,18 @@
+﻿@model ProblemPage
+@{
+    this.ViewData["Title"] = "Other Problem";
+    string subject = "Problem Encountered";
+    string body = string.Empty;
+}
+
+<div class="h-100 p-5">
+    <h1>Problem Encountered!</h1>
+    <p class="fs-4">@AboutSystem.SystemName has encountered a problem.</p>
+    <hr class="my-4">
+    <p>
+        If this continues please report it through following contact information,
+        if possible with details of what you were trying to do in the system when the error happened.
+    </p>
+    <partial name="_Contact" model="(subject, body)" />
+    <partial name="_ErrorDetails" model="(this.Model.TargetUrl, this.Model.HttpStatusCodeString, (string?)null)" />
+</div>

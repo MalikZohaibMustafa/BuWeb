@@ -1,0 +1,53 @@
+# To learn more about .editorconfig see https://aka.ms/editorconfigdocs
+
+root = true
+
+# All files
+[*]
+indent_style = space
+
+# ReSharper properties
+resharper_csharp_wrap_lines = false
+resharper_place_accessorholder_attribute_on_same_line = false
+
+# ReSharper inspection severities
+resharper_access_to_disposed_closure_highlighting = none
+resharper_arrange_redundant_parentheses_highlighting = hint
+resharper_arrange_this_qualifier_highlighting = none
+resharper_arrange_type_member_modifiers_highlighting = hint
+resharper_arrange_type_modifiers_highlighting = hint
+resharper_built_in_type_reference_style_for_member_access_highlighting = hint
+resharper_built_in_type_reference_style_highlighting = hint
+resharper_css_browser_compatibility_highlighting = none
+resharper_inconsistent_naming_highlighting = none
+resharper_possible_multiple_enumeration_highlighting = none
+resharper_redundant_explicit_array_creation_highlighting = none
+resharper_redundant_type_arguments_of_method_highlighting = none
+resharper_suggest_var_or_type_built_in_types_highlighting = hint
+resharper_suggest_var_or_type_elsewhere_highlighting = hint
+resharper_suggest_var_or_type_simple_types_highlighting = hint
+csharp_using_directive_placement = outside_namespace:silent
+csharp_prefer_simple_using_statement = true:suggestion
+csharp_prefer_braces = true:silent
+csharp_style_namespace_declarations = file_scoped:error
+csharp_style_prefer_method_group_conversion = true:silent
+csharp_style_prefer_top_level_statements = true:silent
+csharp_indent_labels = one_less_than_current
+csharp_style_expression_bodied_methods = false:silent
+csharp_style_expression_bodied_constructors = false:silent
+csharp_style_expression_bodied_operators = false:silent
+csharp_style_expression_bodied_properties = true:silent
+csharp_style_expression_bodied_indexers = true:silent
+csharp_style_expression_bodied_accessors = true:silent
+csharp_style_expression_bodied_lambdas = true:silent
+csharp_style_expression_bodied_local_functions = false:silent
+csharp_style_implicit_object_creation_when_type_is_apparent = false
+
+# Xml files
+[*.xml]
+tab_width = 4
+indent_size = 4
+end_of_line = crlf
+
+# Microsoft .NET properties
+csharp_preferred_modifier_order = public, private, protected, internal, static, new, abstract, virtual, sealed, readonly, override, extern, unsafe, volatile, async, required:suggestion

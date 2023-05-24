@@ -1,0 +1,15 @@
+﻿@model Bu.Web.Admin.Areas.Admin.Models.Users.UserInputModel
+@{
+    this.ViewData["Title"] = "Edit User";
+    this.ViewData["Icon"] = "bi bi-person";
+}
+
+<form method="post" asp-area="Admin" asp-controller="Users" asp-action="Update" asp-route-id="@this.Model.UserId">
+    <fieldset>
+        <partial name="_UserFields" model="@this.Model"/>
+    </fieldset>
+    <div class="mt-3 col text-center">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Index" asp-controller="Users" asp-area="Admin" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

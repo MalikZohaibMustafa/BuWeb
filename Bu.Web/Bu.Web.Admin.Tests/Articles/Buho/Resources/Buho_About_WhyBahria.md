@@ -1,0 +1,25 @@
+## ATTRIBUTES
+
+- Federally Chartered
+- HEC recognized
+- Engineering Programs are accredited by PEC
+- Medical Programs are recognized by PMDC
+- LLB Program recognized by PBC
+- Multi – Disciplinary University
+- Highly qualified Faculty
+- Custom-built Campuses
+- State of the art laboratories
+- Well-stocked Libraries
+- Classroom and research based teachings
+- Career Office
+- Internship Opportunities
+- Good Student to Faculty ratio
+- Medical cover for students/staff/faculty
+- Student Resource Center
+- Secure and disciplined environment
+- Scholarships on merit/need basis
+- Two percent seats are reserved for disable persons
+- Wifi
+- 2% Quota for less developed regions of Pakistan.
+- BU Campuses are centrally located.
+- Internal transfer of students between campus at Islamabad, Lahore and Karachi.

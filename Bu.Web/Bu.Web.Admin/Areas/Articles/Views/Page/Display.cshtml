@@ -1,0 +1,52 @@
+﻿@model (ArticleDetail ArticleDetail, ArticlePage ArticlePage)
+@inject Nonce Nonce
+@{
+    this.ViewData["Title"] = "Article Page";
+    this.ViewData["Icon"] = "bi bi-filetype-html";
+}
+
+<partial name="_ArticleDetailFields" model="@this.Model.ArticleDetail"/>
+<fieldset disabled class="mb-3">
+    <partial name="_PageFields" model="@this.Model.ArticlePage"/>
+</fieldset>
+<div class="mb-3 col text-center">
+    @if (!this.Model.ArticleDetail.Published.IsPublished)
+    {
+        <a asp-action="Delete" asp-controller="Page" asp-area="Articles" asp-route-articleDetailId="@this.Model.ArticlePage.ArticleDetailId" asp-route-articlePageId="@this.Model.ArticlePage.ArticlePageId" class="btn btn-secondary">
+            <i class="bi bi-trash"></i> Delete
+        </a>
+        <a asp-action="Edit" asp-controller="Page" asp-area="Articles" asp-route-articleDetailId="@this.Model.ArticlePage.ArticleDetailId" asp-route-articlePageId="@this.Model.ArticlePage.ArticlePageId" class="btn btn-secondary">
+            <i class="bi bi-pencil"></i> Edit
+        </a>
+    }
+    <a asp-action="Display" asp-controller="Home" asp-area="Articles" asp-route-id="@this.Model.ArticlePage.ArticleDetailId" class="btn btn-secondary">Cancel</a>
+</div>
+<div class="card mt-3">
+    <div class="card-header">
+        Preview
+    </div>
+    <div class="card-body">
+        @switch (this.Model.ArticlePage.PageBodyTextFormat)
+        {
+            case RichTextFormats.Html:
+                @this.Html.Raw(this.Model.ArticlePage.PageBody)
+                break;
+            case RichTextFormats.Markdown:
+                @this.Html.Raw(MarkdownParser.ToHtml(this.Model.ArticlePage.PageBody))
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/monaco-editor/min/vs/loader.min.js"></script>
+    <script type="text/javascript" nonce="@this.Nonce.Value">
+        applyMonacoEditor(
+            "@nameof(this.Model.ArticlePage.PageBody)",
+            "@nameof(this.Model.ArticlePage.PageBodyTextFormat)",
+            "@this.Url.Content("~/lib/monaco-editor/")");
+    </script>
+}

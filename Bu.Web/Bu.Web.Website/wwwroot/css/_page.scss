@@ -1,0 +1,30 @@
+﻿.pageBody {
+    min-height: 50vh;
+    padding: 20px;
+    width: 100%;
+}
+
+.white-text {
+    color: white !important;
+}
+
+.text-justify {
+    text-align: justify !important;
+}
+
+li {
+    /*color: black;*/
+    margin-bottom: 4px;
+
+    &::marker {
+        color: black;
+    }
+}
+
+.pageNotFound {
+    font-size: 32px;
+}
+
+.color-black {
+    color: black;
+}

@@ -1,0 +1,68 @@
+﻿:root {
+    --top-bar-links-bg-color: #ECAD06;
+    --top-main-menu-bar-bg-color: #0B0C36;
+    --copyrights-bg-color: #0B0C36;
+    --footer-texture-bg-image: url(../images/Patterns/pattern6.png);
+    --footer-texture-bg-color: 26,26,26;
+}
+
+@import "_variables";
+
+@import "basic-layout";
+@import "basic-left-menu-layout";
+@import "basic-right-menu-layout";
+
+@import "bu-layout";
+@import "bu-left-menu-layout";
+@import "bu-right-menu-layout";
+
+@import "top-bar-links";
+@import "logo-bar";
+@import "top-main-menu-bar";
+
+.side-menu {
+    .nav-link {
+        .bi.bi-chevron-down {
+            transition: all 0.3s ease;
+        }
+    }
+
+    .nav-link:not([aria-expanded="true"]) {
+        .bi.bi-chevron-down::before {
+            transform: rotate(270deg);
+        }
+    }
+}
+
+.text-justify {
+    text-align: justify !important;
+}
+
+.line-bottom {
+    position: relative;
+    margin-bottom: 1.5rem;
+    padding-bottom: .5rem;
+
+    &:after {
+        background-color: var(--top-bar-links-bg-color);
+        bottom: -1px;
+        content: "";
+        height: 2px;
+        left: 0;
+        position: absolute;
+        width: 50px;
+    }
+}
+
+
+
+/*@import "slider";
+@import "main-welcome-section.scss";
+@import "app.scss";
+@import "main-activities-section.scss";
+@import "homepageBottom.scss";
+@import "_table.scss";
+@import "_page.scss";
+
+@import "CampusPagesCss/CampusHomePage.scss";
+*/

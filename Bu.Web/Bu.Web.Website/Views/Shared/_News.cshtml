@@ -1,0 +1,21 @@
+﻿@using Bu.Web.Data.CustomEntities
+@model int
+@inject IWebsiteCachedContext CachedContext
+@{
+    IReadOnlyList<NewsOrTenderDetail> newsList = this.CachedContext.AreaNewsLookup[this.Model].ToList();
+}
+
+@if (newsList.Any())
+{
+    <div class="list-group">
+        @foreach (var news in newsList)
+        {
+            <a href="@news.GetUrl(this.Url)" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@news.ArticleName</h5>
+                    <small>TODO days ago</small>
+                </div>
+            </a>
+        }
+    </div>
+}

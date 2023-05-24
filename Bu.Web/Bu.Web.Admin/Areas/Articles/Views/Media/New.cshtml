@@ -1,0 +1,16 @@
+﻿@model (ArticleDetail ArticleDetail, ArticleMedia ArticleMedia)
+@{
+    this.ViewData["Title"] = "New Article Media";
+    this.ViewData["Icon"] = "bi bi-collection";
+}
+
+<partial name="_ArticleDetailFields" model="@this.Model.ArticleDetail" />
+<form method="post" method="post" enctype="multipart/form-data" asp-area="Articles" asp-controller="Media" asp-action="Add" asp-route-id="@this.Model.ArticleMedia.ArticleMediaId">
+    <fieldset>
+        <partial name="_MediaFields" model="@this.Model.ArticleMedia" />
+    </fieldset>
+    <div class="mt-3 col text-center">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Display" asp-controller="Home" asp-area="Articles" asp-route-id="@this.Model.ArticleMedia.ArticleDetailId" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

@@ -1,0 +1,19 @@
+﻿@model ProblemPage
+@{
+    this.ViewData["Title"] = "Access Not Allowed";
+    string subject = $"Access Not Allowed - User ({this.User.Identity?.Name ?? "[N/A]"})";
+    string body = $"Url: {this.Model.TargetUrl}";
+}
+
+<div class="h-100 p-5">
+    <h1>Access Not Allowed</h1>
+    <p class="fs-4">Your user is not allowed access to the @AboutSystem.SystemName system or this part of it.</p>
+    <hr class="my-4">
+    <p>This could be because:</p>
+    <ul>
+        <li>Your user is not registered to use the @AboutSystem.SystemName system, <i>or</i></li>
+        <li>Your user is registered to use the @AboutSystem.SystemName system but does not have permission to use this part.</li>
+    </ul>
+    <partial name="_Contact" model="(subject, body)" />
+    <partial name="_ErrorDetails" model="(this.Model.TargetUrl, this.Model.HttpStatusCodeString, (string?)null)" />
+</div>

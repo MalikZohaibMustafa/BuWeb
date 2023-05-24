@@ -1,0 +1,109 @@
+﻿@model Bu.Web.Admin.Areas.Admin.Models.Users.UserInputModel
+@inject IAdminFixedContext AdminFixedContext
+@{
+    this.ViewData["Title"] = "User Areas";
+    this.ViewData["Icon"] = "bi bi-globe";
+
+    Func<(UserArea UserArea, Area Area), IHtmlContent> RenderModal =
+        @<div class="modal fade" id="@($"modalUserArea{item.Area.AreaId}")" tabindex="-1" aria-labelledby="@($"#modalLabel{item.Area.AreaId}")" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="@($"modalLabel{item.Area.AreaId}")">
+                            @(item.UserArea.UserAreaId == default ? "Add User Area" : "Edit User Area")
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="@($"form{item.Area.AreaId}")">
+                            <div class="row mb-3">
+                                <input type="hidden" asp-for="@item.Area.AreaId">
+                                <label asp-for="@item.Area.AreaPath" class="col-md-12 col-lg-4 col-xl-3 col-form-label"></label>
+                                <div class="col-md-12 col-lg-8 col-xl-9">
+                                    <input readonly asp-for="@item.Area.AreaPath" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label asp-for="@item.UserArea.Role" class="col-md-12 col-lg-4 col-xl-3 col-form-label"></label>
+                                <div class="col-md-12 col-lg-8 col-xl-9">
+                                    <select asp-for="@item.UserArea.Role" autofocus class="form-select" asp-items="@this.AdminFixedContext.GetListItems<UserArea.Roles>(true)"></select>
+                                    <span asp-validation-for="@item.UserArea.Role"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label asp-for="@item.UserArea!.ExpiryDateUser" class="col-md-12 col-lg-4 col-xl-3 col-form-label"></label>
+                                <div class="col-md-12 col-lg-8 col-xl-9">
+                                    <input asp-for="@item.UserArea!.ExpiryDateUser" class="form-control">
+                                    <span asp-validation-for="@item.UserArea!.ExpiryDateUser"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label asp-for="@item.UserArea!.Status" class="col-md-12 col-lg-4 col-xl-3 col-form-label"></label>
+                                <div class="col-md-12 col-lg-8 col-xl-9">
+                                    <select asp-for="@item.UserArea!.Status" class="form-select" asp-items="this.AdminFixedContext.GetListItems<UserArea.Statuses>(true)"></select>
+                                    <span asp-validation-for="@item.UserArea!.Status"></span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        @if (item.UserArea.UserAreaId != default)
+                        {
+                            <form asp-action="DeleteUserArea" class="flex-grow-1">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        }
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" form="@($"form{item.Area.AreaId}")">
+                            @(item.UserArea.UserAreaId == default ? "Add" : "Save")
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>;
+
+}
+
+<fieldset disabled>
+    <partial name="_UserFields" model="@this.Model"/>
+</fieldset>
+@this.Html.RenderBootstrapTable(null, new BootstrapTable<Area>(this.AdminFixedContext.AreasList)
+{
+    Head = @<tr>
+               <th>Area</th>
+               <th>Role</th>
+               <th>Expiry Date</th>
+               <th>Status</th>
+               <th>Actions</th>
+           </tr>,
+    Body = @<tr>
+               @{
+                   UserArea? userArea = this.Model.UserAreas.SingleOrDefault(ua => ua.AreaId == item.Data.AreaId);
+               }
+               <td>@item.Data.AreaPath</td>
+               <td>@userArea?.Role.GetDescription()</td>
+               <td>@userArea?.ExpiryDateUser</td>
+               <td>@userArea?.Status.GetDescription()</td>
+               <td>
+                   @if (userArea != null)
+                   {
+                       <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="@($"#modalUserArea{item.Data.AreaId}")">
+                           Edit
+                       </button>
+                   }
+                   else
+                   {
+                       <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="@($"#modalUserArea{item.Data.AreaId}")">
+                           Add
+                       </button>
+                   }
+
+                   @RenderModal((userArea ?? new UserArea
+                   {
+                       AreaId = item.Data.AreaId,
+                       ExpiryDateUser = DateTimeHelper.ApplicationNow.AddMonths(1),
+                       Role = UserArea.Roles.Author, Status = UserArea.Statuses.Active,
+                   }, item.Data))
+               </td>
+           </tr>,
+})

@@ -1,0 +1,37 @@
+﻿@using Bu.Web.Admin.Areas.Articles.Models.Home
+@model Bu.Web.Admin.Areas.Articles.Models.Home.ListModel
+@inject IApplicationClock ApplicationClock
+@{
+    this.ViewData["Title"] = "Articles";
+    this.ViewData["Icon"] = "bi bi-journals";
+}
+
+<partial name="_ListFilters" model="this.Model.Input" />
+@(this.Html.RenderBootstrapTable(this.Model.Input, new BootstrapTable<ArticleDetail, ListInputModel>(this.Model.PageData)
+{
+    Head = @<tr>
+    @this.Html.RenderTableHeader(this.Html.DisplayNameForInnerType((ArticleDetail ad) => ad.Area!.AreaPath), nameof(ArticleDetail.Area.AreaPath), this.Model.Input, SortType.Text)
+    @this.Html.RenderTableHeader(this.Html.DisplayNameForInnerType((ArticleDetail ad) => ad.ArticleName), nameof(ArticleDetail.ArticleName), this.Model.Input, SortType.Text)
+    @this.Html.RenderTableHeader(this.Html.DisplayNameForInnerType((ArticleDetail ad) => ad.ArticleType), nameof(ArticleDetail.ArticleType), this.Model.Input, SortType.Text)
+    @this.Html.RenderTableHeader(this.Html.DisplayNameForInnerType((ArticleDetail ad) => ad.ArticleUniqueId), nameof(ArticleDetail.ArticleUniqueId), this.Model.Input, SortType.Text)
+    @this.Html.RenderTableHeader(this.Html.DisplayNameForInnerType((ArticleDetail ad) => ad.PublishedOnUser), nameof(ArticleDetail.PublishedOnUser), this.Model.Input, SortType.Number)
+    @this.Html.RenderTableHeader(this.Html.DisplayNameForInnerType((ArticleDetail ad) => ad.ExpiryDateUser), nameof(ArticleDetail.ExpiryDateUtc), this.Model.Input, SortType.Number)
+    @this.Html.RenderTableHeader(this.Html.DisplayNameForInnerType((ArticleDetail ad) => ad.Status), nameof(ArticleDetail.Status), this.Model.Input, SortType.Text)
+</tr>,
+    Body = @<tr class="@(item.Data.ExpiryDateUtc < ApplicationClock.UtcNow ? "table-danger" : "")">
+    <td>@item.Data.Area!.AreaPath</td>
+    <td>
+        <a asp-area="Articles" asp-controller="Home" asp-action="Display" asp-route-id="@item.Data.ArticleDetailId">
+            @item.Data.ArticleName
+        </a>
+    </td>
+    <td>@item.Data.ArticleType.GetDescription()</td>
+    <td>@item.Data.ArticleUniqueId</td>
+    <td>@item.Data.PublishedOnUser</td>
+    <td>@item.Data.ExpiryDateUser</td>
+    <td>@item.Data.Status.GetDescription()</td>
+</tr>,
+    EmptyRow = @<tr>
+    <td colspan="7">No record found.</td>
+</tr>,
+}))

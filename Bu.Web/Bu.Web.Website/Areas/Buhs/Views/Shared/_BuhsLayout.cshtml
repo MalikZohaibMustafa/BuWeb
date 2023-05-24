@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "_BuLayout";
+}
+
+@section Head
+{
+    @await RenderSectionAsync("Head", required: false)
+}
+
+@section Header
+{
+    @await Html.PartialAsync("_TopSecondaryMenuBar", BuhsLayoutData.Data.SecondaryMenu)
+}
+
+@RenderBody()
+
+@section Scripts
+{
+    @await RenderSectionAsync("Scripts", required: false)
+}

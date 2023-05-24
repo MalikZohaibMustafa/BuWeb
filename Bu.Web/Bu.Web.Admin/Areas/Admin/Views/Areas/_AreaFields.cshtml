@@ -1,0 +1,77 @@
+﻿@model Area
+@inject IAdminFixedContext AdminFixedContext
+
+<input asp-for="AreaId" type="hidden" />
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="AreaName" class="col-md-12 col-lg-3 col-xl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xl-10">
+                <input asp-for="AreaName" class="form-control" autofocus>
+                <span asp-validation-for="AreaName"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="AreaPath" class="col-md-12 col-lg-3 col-xl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xl-10">
+                <input asp-for="AreaPath" readonly class="form-control" autofocus>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="ParentAreaId" class="col-md-12 col-lg-3 col-xl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xl-10">
+                <select data-val="true" disabled="@(this.Model.AreaId != default)" data-val-required="The Parent Area field is required." asp-for="ParentAreaId" class="form-select" asp-items="@(this.AdminFixedContext.GetAreas(true))"></select>
+                <span asp-validation-for="ParentAreaId"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="InstituteId" class="col-md-12 col-lg-3 col-xl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xl-10">
+                <select asp-for="InstituteId" class="form-select" asp-items="@(this.AdminFixedContext.GetInstitutes(INamedEntity.Names.Alias, true))"></select>
+                <span asp-validation-for="InstituteId"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="InstituteLocationId" class="col-md-12 col-lg-3 col-xl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xl-10">
+                <select asp-for="InstituteLocationId" class="form-select" asp-items="@this.AdminFixedContext.GetInstituteLocations(INamedEntity.Names.Alias, INamedEntity.Names.Alias, null, true)"></select>
+                <span asp-validation-for="InstituteLocationId"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="DepartmentId" class="col-md-12 col-lg-3 col-xl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xl-10">
+                <select asp-for="DepartmentId" class="form-select" asp-items="@this.AdminFixedContext.GetDepartments(INamedEntity.Names.Alias, INamedEntity.Names.Alias, null, true)"></select>
+                <span asp-validation-for="DepartmentId"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="ContactOffice" class="col-md-12 col-lg-3 col-xl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xl-10">
+                <input asp-for="ContactOffice" class="form-control" />
+                <span asp-validation-for="ContactOffice"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="Status" class="col-md-12 col-lg-3 col-xl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xl-10">
+                <select asp-for="Status" class="form-select" asp-items="@this.AdminFixedContext.GetListItems<Area.Statuses>(true)"></select>
+                <span asp-validation-for="Status"></span>
+            </div>
+        </div>
+    </div>
+</div>

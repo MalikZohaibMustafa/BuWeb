@@ -1,0 +1,70 @@
+﻿@model ArticleDetail
+@{
+    this.ViewData["Title"] = "Article";
+    this.ViewData["Icon"] = "bi bi-journal";
+}
+
+<div class="row justify-content-end mb-3">
+    <label class="col-auto col-form-label">Version</label>
+    <div class="dropdown col-auto">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            @this.Model.Published.Version
+        </button>
+        <ul class="dropdown-menu">
+            @foreach (ArticleDetail articleDetail in this.Model.Article!.ArticleDetails!.OrderByDescending(ad => ad.Published.IsPublished ? ad.PublishedOnUtc : ad.LastUpdatedOnUtc))
+            {
+                <li>
+                    <a class="dropdown-item@(articleDetail == this.Model ? " active" : "")" asp-action="Display" asp-route-id="@articleDetail.ArticleDetailId">@articleDetail.Published.Version</a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+@this.Html.RenderBootstrapValidationSummary()
+<fieldset disabled class="mb-3">
+    <partial name="_ArticleDetailFields" model="@this.Model" />
+</fieldset>
+<div class="mb-3 col text-center">
+    @if (this.Model.Published.IsPending)
+    {
+        <a asp-action="Publish" asp-controller="Home" asp-area="Articles" asp-route-id="@this.Model.Id" class="btn btn-success">
+            <i class="bi bi-cloud-upload"></i> Publish
+        </a>
+    }
+    @if (!this.Model.Published.IsPublished && !this.Model.Published.IsRejected)
+    {
+        <a asp-action="Reject" asp-controller="Home" asp-area="Articles" asp-route-id="@this.Model.Id" class="btn btn-secondary">
+            <i class="bi bi-trash"></i> Reject
+        </a>
+    }
+    @if (!this.Model.Published.IsPublished && !this.Model.Published.IsPending)
+    {
+        <a asp-action="Pending" asp-controller="Home" asp-area="Articles" asp-route-id="@this.Model.Id" class="btn btn-secondary">
+            <i class="bi bi-clock"></i> Pending
+        </a>
+    }
+    @if (this.Model.Published.IsPending)
+    {
+        <a asp-action="Edit" asp-controller="Home" asp-area="Articles" asp-route-id="@this.Model.Id" class="btn btn-secondary">
+            <i class="bi bi-pencil"></i> Edit
+        </a>
+    }
+    @if (this.Model.Published.IsPublished && !this.Model.Article!.ArticleDetails!.Any(ad => ad.Published.IsPending))
+    {
+        <a asp-action="Draft" asp-controller="Home" asp-area="Articles" asp-route-id="@this.Model.Id" class="btn btn-secondary">
+            <i class="bi bi-pencil"></i> Draft
+        </a>
+    }
+    <a asp-action="Index" asp-controller="Home" asp-area="Articles" class="btn btn-secondary">Cancel</a>
+</div>
+
+@if (!this.Model.Published.IsPublished)
+{
+    <div class="mb-3">
+        <a class="btn btn-success" asp-area="Articles" asp-controller="Page" asp-action="New" asp-route-id="@this.Model.ArticleDetailId"><i class="bi bi-plus"></i> Add Page</a>
+        <a class="btn btn-success" asp-area="Articles" asp-controller="Media" asp-action="New" asp-route-id="@this.Model.ArticleDetailId"><i class="bi bi-plus"></i> Add Media</a>
+    </div>
+}
+<partial name="_ArticlePagesList" model="@this.Model" />
+<partial name="_ArticleMediasList" model="@this.Model" />

@@ -1,0 +1,21 @@
+﻿@model ProblemPage
+@{
+    this.ViewData["Title"] = "Page Not Found";
+    this.ViewData["PageTitleVisible"] = false;
+    string subject = $"Page Not Found - {this.Model.TargetUrl}";
+    string body = string.Empty;
+}
+
+<div class="h-100 p-5">
+    <h1>Page Not Found!</h1>
+    <p class="fs-4">This page does not exist in @AboutSystem.SystemName.</p>
+    <hr class="my-4">
+    <p>This could be because:</p>
+    <ul>
+        <li>An invalid URL was typed into the browser <i>or</i></li>
+        <li>A bookmarked link refers to a page on a previous version of @AboutSystem.SystemName which no longer exists or has a changed address <i>or</i></li>
+        <li>If this page is shown after following a link in the system then there may be a bug. If so, please report it through following contact information.</li>
+    </ul>
+    <partial name="_Contact" model="(subject, body)" />
+    <partial name="_ErrorDetails" model="(this.Model.TargetUrl, this.Model.HttpStatusCodeString, (string?)null)" />
+</div>

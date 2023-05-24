@@ -1,0 +1,7 @@
+﻿@model Bu.Web.Website.Models.LogoBar
+
+<div logo-bar class="d-flex flex-row justify-content-start align-items-center">
+    <a href="@Href(this.Model.NavigateUrl)" class="px-3 py-2">
+        <img src="@Href(this.Model.LogoUrl)" alt="Logo" class="w-auto"/>
+    </a>
+</div>

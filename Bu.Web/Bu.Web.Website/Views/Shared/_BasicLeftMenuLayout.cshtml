@@ -1,0 +1,27 @@
+﻿@{
+    Layout = "_BasicLayout";
+}
+
+@section Head
+{
+    @await RenderSectionAsync("Head", required: false)
+}
+
+@section Header
+{
+    @await RenderSectionAsync("Header", required: false)
+}
+
+<div basic-left-menu-layout-container class="row">
+    <div basic-left-menu-layout-body class="col-md-9 col-xl-10">
+        @RenderBody()
+    </div>
+    <div basic-left-menu-layout-menu class="side-menu col-md-3 col-xl-2">
+        @await RenderSectionAsync("LeftMenu", required: true)
+    </div>
+</div>
+
+@section Scripts
+{
+    @await RenderSectionAsync("Scripts", required: false)
+}

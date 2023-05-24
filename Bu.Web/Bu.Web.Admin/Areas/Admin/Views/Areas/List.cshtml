@@ -1,0 +1,99 @@
+﻿@using Bu.Web.Admin.Areas.Admin.Models.Areas
+@inject IAdminFixedContext AdminFixedContext
+@model Bu.Web.Admin.Areas.Admin.Models.Areas.ListModel
+@{
+    this.ViewData["Title"] = "Areas";
+    this.ViewData["Icon"] = "bi bi-globe";
+}
+
+<form method="get" autocomplete="off">
+    @(this.Html.RenderBootstrapValidationSummary())
+    <input asp-for="Input.PageIndex" type="hidden"/>
+    <input asp-for="Input.PageSize" type="hidden"/>
+    <input asp-for="Input.Sort" type="hidden"/>
+    <input asp-for="Input.Desc" type="hidden"/>
+    <div class="row g-3 mb-3">
+        <div class="col-md-12 col-lg-auto mt-md-auto mt-xl-3 text-xl-center">
+            <a asp-action="New" class="btn btn-success w-100"><i class="bi bi-plus"></i> New Area</a>
+        </div>
+        <div class="col-lg m-0"></div>
+        <div class="col-md-4 col-lg-3">
+            <div class="row">
+                <label asp-for="@(this.Model.Input.Status)" class="col-md-12 col-lg-auto col-form-label"></label>
+                <div class="col-md-12 col-lg">
+                    <select class="form-select" asp-for="@(this.Model.Input.Status)" asp-items="@this.AdminFixedContext.GetListItems<Area.Statuses>(true)"></select>
+                    <span asp-validation-for="@(this.Model.Input.Status)"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-lg-5 col-xl-4 col-xxl-3">
+            <div class="row">
+                <label asp-for="@(this.Model.Input.Search)" class="col-md-12 col-lg-auto col-form-label"></label>
+                <div class="col-md-12 col-lg">
+                    <input class="form-control" asp-for="@(this.Model.Input.Search)"/>
+                    <span asp-validation-for="@(this.Model.Input.Search)"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-auto mt-xl-3 text-xl-center">
+            <button class="btn btn-secondary w-100"><i class="bi bi-search"></i> Search</button>
+        </div>
+    </div>
+</form>
+
+@(this.Html.RenderBootstrapTable(this.Model.Input, new BootstrapTable<Area, ListInputModel>(this.Model.PageData)
+{
+    Head = @<tr>
+               <th>Actions</th>
+               @(this.Html.RenderTableHeader("Name", nameof(Area.AreaPath), this.Model.Input, SortType.Text))
+               <th>Parent Area</th>
+               @(this.Html.RenderTableHeader("Institute", nameof(Area.Institute.InstituteAlias), this.Model.Input, SortType.Text))
+               @(this.Html.RenderTableHeader("Location", nameof(Area.InstituteLocation.LocationAlias), this.Model.Input, SortType.Text))
+               @(this.Html.RenderTableHeader("Department", nameof(Area.Department.DepartmentAlias), this.Model.Input, SortType.Text))
+               @(this.Html.RenderTableHeader("Status", nameof(Area.Status), this.Model.Input, SortType.Text))
+           </tr>,
+    Body = @<tr>
+               <td>
+                   <fieldset disabled="@(item.Data.ParentAreaId == null)">
+                       <a class="btn-sm btn btn-secondary" title="Edit" asp-area="Admin" asp-controller="Areas" asp-action="Edit" asp-route-id="@item.Data.AreaId">
+                           <i class="bi bi-pencil"></i>
+                       </a>
+                       <a class="btn-sm btn btn-danger" title="Delete" asp-area="Admin" asp-controller="Areas" asp-action="Delete" asp-route-id="@item.Data.AreaId">
+                           <i class="bi bi-trash"></i>
+                       </a>
+                   </fieldset>
+               </td>
+               <td>
+                   <a asp-area="Admin" asp-controller="Areas" asp-action="Display" asp-route-id="@item.Data.AreaId">
+                       @(item.Data.AreaName.ToNullIfEmpty() ?? "[Root]")
+                   </a>
+                   <div>
+                       <em title="Path">@item.Data.AreaPath</em>
+                   </div>
+               </td>
+               <td>
+                   @if (item.Data.ParentAreaId != null)
+                   {
+                       <a asp-area="Admin" asp-controller="Areas" asp-action="Display" asp-route-id="@item.Data.ParentAreaId">
+                           @item.Data.ParentArea!.AreaName
+                       </a>
+                       <div>
+                           <em title="Path">@item.Data.ParentArea!.AreaPath</em>
+                       </div>
+                   }
+               </td>
+               <td>
+                   @item.Data.Institute!.InstituteAlias
+               </td>
+               <td>
+                   @item.Data.InstituteLocation?.LocationAlias
+               </td>
+               <td>
+                   @item.Data.Department?.DepartmentAlias
+               </td>
+               <td>@item.Data.Status.GetDescription()</td>
+           </tr>,
+    EmptyRow = @<tr>
+                   <td class="4">No record found.</td>
+               </tr>,
+}))

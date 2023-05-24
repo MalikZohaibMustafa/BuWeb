@@ -1,0 +1,100 @@
+﻿@model Bu.Web.Data.Entities.EventLog
+@inject Nonce Nonce
+@{
+    this.ViewData["Title"] = "Event Log";
+    this.ViewData["Icon"] = "bi bi-clock-history";
+
+    int GetRowsCount(string? input, int minimumRows)
+    {
+        int? rows = input?.Split(Environment.NewLine).Length;
+        return rows == null || rows.Value < minimumRows ? minimumRows : rows.Value;
+    }
+}
+<fieldset>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="row">
+                <label asp-for="EventLogId" class="col-md-12 col-lg-4 col-xl-3 col-form-label"></label>
+                <div class="col-md-12 col-lg-8 col-xl-9">
+                    <input asp-for="EventLogId" readonly class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label asp-for="SourceApplication" class="col-md-12 col-lg-4 col-xl-3 col-form-label"></label>
+                <div class="col-md-12 col-lg-8 col-xl-9">
+                    <input asp-for="SourceApplication" readonly class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label asp-for="Timestamp" class="col-md-12 col-lg-4 col-xl-3 col-form-label"></label>
+                <div class="col-md-12 col-lg-8 col-xl-9">
+                    <input asp-for="Timestamp" asp-format="{0:O}" readonly class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label asp-for="Level" class="col-md-12 col-lg-4 col-xl-3 col-form-label"></label>
+                <div class="col-md-12 col-lg-8 col-xl-9">
+                    <input asp-for="Level" readonly class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label asp-for="SourceContext" class="col-md-12 col-lg-4 col-xl-3 col-form-label"></label>
+                <div class="col-md-12 col-lg-8 col-xl-9">
+                    <input asp-for="SourceContext" readonly class="form-control">
+                </div>
+            </div>
+        </div>
+        <div>
+            <label asp-for="Message" class="col-form-label"></label>
+            <textarea asp-for="Message" readonly class="form-control" rows="@GetRowsCount(this.Model.Message, 4)"></textarea>
+        </div>
+        <div>
+            <label asp-for="MessageTemplate" class="col-form-label"></label>
+            <textarea asp-for="MessageTemplate" readonly class="form-control" rows="@GetRowsCount(this.Model.MessageTemplate, 4)"></textarea>
+        </div>
+        <div>
+            <label asp-for="Exception" class="col-form-label"></label>
+            <textarea asp-for="Exception" readonly class="form-control" rows="@GetRowsCount(this.Model.Exception, 4)"></textarea>
+        </div>
+        <div>
+            <label asp-for="LogEvent" class="col-form-label"></label>
+            <textarea asp-for="LogEvent" readonly class="form-control" rows="@GetRowsCount(this.Model.LogEvent, 4)"></textarea>
+        </div>
+    </div>
+</fieldset>
+<div class="mt-3 col text-center">
+    <textarea readonly class="visually-hidden" id="info">@this.Model.ToString()</textarea>
+    <button type="button" class="btn btn-primary" id="btnCopyToClipboard">
+        <i class="bi bi-clipboard"></i>
+        Copy to clipboard
+    </button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</div>
+
+@section Scripts
+    {
+    <script type="text/javascript" nonce="@this.Nonce.Value">
+        const btnCopytoClipboard = document.getElementById("btnCopyToClipboard");
+        function copyToClipboard(btn) {
+            navigator.clipboard.writeText($("#info").val()).then(function () {
+                $(btn).addClass("btn-success").removeClass("btn-secondary").removeClass("btn-danger").html("Copied to clipboard");
+                setTimeout(function () {
+                    $(btn).removeClass("btn-success").addClass("btn-secondary").removeClass("btn-danger").html("<i class=\"bi bi-clipboard\"></i> Copy to clipboard");
+                },
+                    10000);
+            }, function () {
+                $(btn).removeClass("btn-success").removeClass("btn-secondary").addClass("btn-danger").text("Copied to clipboard failed");
+            });
+        }
+
+        btnCopytoClipboard.onclick = function () { copyToClipboard(btnCopytoClipboard); }
+    </script>
+}

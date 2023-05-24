@@ -1,0 +1,23 @@
+﻿@model ArticleDetail
+@{
+    this.ViewData["Title"] = "Article";
+    this.ViewData["Icon"] = "bi bi-journal";
+}
+
+<fieldset disabled class="mb-3">
+    <partial name="_ArticleDetailFields" model="@this.Model" />
+</fieldset>
+<div class="mb-3 col text-center">
+    @if (this.Model.Published.IsPublished)
+    {
+        <form method="post" asp-area="Articles" asp-controller="Home" asp-action="DraftPost" asp-route-id="@this.Model.ArticleDetailId">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Create Draft
+            </button>
+            <a asp-action="Display" asp-controller="Home" asp-area="Articles" asp-route-id="@this.Model.ArticleDetailId" class="btn btn-secondary">Cancel</a>
+        </form>
+    }
+</div>
+
+<partial name="_ArticlePagesList" model="@this.Model" />
+<partial name="_ArticleMediasList" model="@this.Model" />

@@ -1,0 +1,46 @@
+﻿@model ArticleDetail
+
+@(this.Html.RenderBootstrapTable(null, new BootstrapTable<ArticleMedia>(this.Model.ArticleMedias!.OrderBy(m => m.MediaContentType).ThenBy(m => m.MediaFileName).ToList())
+{
+    Caption = @<caption>Article Media</caption>,
+    Head = @<tr>
+               @if (!this.Model.Published.IsPublished)
+               {
+                   <th>Actions</th>
+               }
+               <th>@this.Html.DisplayNameForInnerType((ArticleMedia page) => page.MediaFileName)</th>
+               <th>@this.Html.DisplayNameForInnerType((ArticleMedia page) => page.MediaUniqueId)</th>
+               <th>@this.Html.DisplayNameForInnerType((ArticleMedia page) => page.MediaContentType)</th>
+               <th>@this.Html.DisplayNameForInnerType((ArticleMedia page) => page.MediaContentDisposition)</th>
+           </tr>,
+    Body = @<tr>
+               @if (!item.Data.ArticleDetail!.Published.IsPublished)
+               {
+                   <td>
+                       <a class="btn-sm btn btn-secondary" title="Edit" asp-area="Articles" asp-controller="Media" asp-action="Edit" asp-route-articleDetailId="@item.Data.ArticleDetailId" asp-route-articleMediaId="@item.Data.ArticleMediaId">
+                           <i class="bi bi-pencil"></i>
+                       </a>
+                       <a class="btn-sm btn btn-danger" title="Delete" asp-area="Articles" asp-controller="Media" asp-action="Delete" asp-route-articleDetailId="@item.Data.ArticleDetailId" asp-route-articleMediaId="@item.Data.ArticleMediaId">
+                           <i class="bi bi-trash"></i>
+                       </a>
+                   </td>
+               }
+               <td>
+                   <a asp-area="Articles" asp-controller="Media" asp-action="Display" asp-route-articleDetailId="@item.Data.ArticleDetailId" asp-route-articleMediaId="@item.Data.ArticleMediaId">
+                       @item.Data.MediaFileName
+                   </a>
+               </td>
+               <td>
+                   @item.Data.MediaUniqueId
+               </td>
+               <td>
+                   @item.Data.MediaContentType.GetDescription()
+               </td>
+               <td>
+                   @item.Data.MediaContentDisposition?.GetDescription()
+               </td>
+           </tr>,
+    EmptyRow = @<tr>
+                   <td colspan="5">No record found.</td>
+               </tr>,
+}))

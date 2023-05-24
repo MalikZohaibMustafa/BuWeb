@@ -1,0 +1,27 @@
+[
+  {
+    "outputFileName": "wwwroot/bundles/all.js",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/js/bootstrap.js",
+      "wwwroot/lib/jquery/jquery.js",
+      "wwwroot/lib/jquery-validate/jquery.validate.js",
+      "wwwroot/lib/jquery-validate/additional-methods.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "wwwroot/js/GlobalCommon.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "outputMode": "multipleLines",
+      "preserveImportantComments": false
+    }
+  },
+  {
+    "outputFileName": "wwwroot/bundles/all.css",
+    "inputFiles": [
+      "wwwroot/lib/bootswatch/spacelab/bootstrap.css",
+      "wwwroot/lib/bootstrap-icons/font/bootstrap-icons.css",
+      "wwwroot/css/site.css"
+    ],
+    "minify": { "enabled": true }
+  }
+]

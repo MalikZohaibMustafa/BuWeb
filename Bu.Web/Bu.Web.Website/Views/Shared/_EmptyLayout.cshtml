@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Bahria University</title>
+    <link rel="shortcut icon" type="image/ico" href="~/favicon.ico">
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
+    @await RenderSectionAsync("Head", required: false)
+</head>
+<body>
+    @RenderBody()
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    @if ((bool?)this.ViewData["LoadValidations"] == true)
+    {
+        <script src="~/lib/jquery/jquery.min.js"></script>
+        <script src="~/lib/jquery-validate/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/Bu.AspNetCore.Core.js"></script>
+    }
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,39 @@
+﻿@model Bu.Web.Admin.Areas.Articles.Models.Home.ListInputModel
+@inject IAdminFixedContext AdminFixedContext
+
+<form method="get" autocomplete="off" asp-area="Articles" asp-controller="Home" asp-action="List">
+    @(this.Html.RenderBootstrapValidationSummary())
+    <input asp-for="PageIndex" type="hidden" />
+    <input asp-for="PageSize" type="hidden" />
+    <input asp-for="Sort" type="hidden" />
+    <input asp-for="Desc" type="hidden" />
+    <div class="row g-3 mb-3">
+        <div class="col-md-12 col-lg-auto mt-md-auto">
+            <a asp-action="New" asp-controller="Home" asp-area="Articles" class="btn btn-success w-100"><i class="bi bi-plus"></i> New Article</a>
+        </div>
+        <div class="col-lg"></div>
+        <div class="col-md-3 col-lg-auto">
+            <label asp-for="AreaId" class="col-form-label"></label>
+            <select class="form-select" asp-for="AreaId" asp-items="@(this.AdminFixedContext.GetAreas(true, "All"))"></select>
+            <span asp-validation-for="AreaId"></span>
+        </div>
+        <div class="col-md-3 col-lg-auto">
+            <label asp-for="ArticleType" class="col-form-label"></label>
+            <select class="form-select" asp-for="ArticleType" asp-items="@(this.AdminFixedContext.GetListItems<ArticleDetail.ArticleTypes>(true, "All"))"></select>
+            <span asp-validation-for="ArticleType"></span>
+        </div>
+        <div class="col-md-3 col-lg-auto">
+            <label asp-for="Status" class="col-form-label"></label>
+            <select class="form-select" asp-for="Status" asp-items="@(this.AdminFixedContext.GetListItems<IPublished.Statuses>(true, "All"))"></select>
+            <span asp-validation-for="Status"></span>
+        </div>
+        <div class="col-md-3 col-lg-auto">
+            <label asp-for="Search" class="col-form-label"></label>
+            <input class="form-control" asp-for="Search" />
+            <span asp-validation-for="Search"></span>
+        </div>
+        <div class="col-md-12 col-lg-auto mt-lg-auto">
+            <button class="btn btn-secondary w-100"><i class="bi bi-search"></i> Search</button>
+        </div>
+    </div>
+</form>

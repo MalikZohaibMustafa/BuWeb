@@ -1,0 +1,11 @@
+:root {
+    --header-bar-height: 60px;
+}
+
+.minHeaderBarHeight {
+    min-height: var(--header-bar-height);
+}
+
+.headerBarHeight {
+    height: var(--header-bar-height);
+}

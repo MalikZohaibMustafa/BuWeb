@@ -1,0 +1,94 @@
+﻿@inject IAuthorizationService AuthorizationService
+@inject IApplicationClock ApplicationClock
+@inject IWebHostEnvironment environment
+@{
+    this.ViewData["Title"] = $"About {AboutSystem.SystemName}";
+    bool superAdministrator = (await this.AuthorizationService.AuthorizeAsync(this.User, nameof(AuthorizationPolicies.SuperAdministrator))).Succeeded;
+}
+@if (!string.IsNullOrWhiteSpace(AboutSystem.SupportEmail) || !string.IsNullOrWhiteSpace(AboutSystem.SupportPhone))
+{
+    <fieldset disabled>
+        <legend>Support</legend>
+        <p>Contact your system administrator:</p>
+        <ul>
+            @if (!string.IsNullOrWhiteSpace(AboutSystem.SupportEmail))
+            {
+                <li>
+                    <a href="mailto:@(AboutSystem.SupportEmail)?Subject=@AboutSystem.SystemName @AboutSystem.Version.ToString() - Support query from @(this.User.Identity?.Name ?? "???") at @this.ViewContext.HttpContext.Request.Host">@AboutSystem.SupportEmail</a>
+                </li>
+            }
+            @if (!string.IsNullOrWhiteSpace(AboutSystem.SupportPhone))
+            {
+                <li>
+                    <a href="tel:@(AboutSystem.SupportPhone)">@AboutSystem.SupportPhone</a>
+                </li>
+            }
+        </ul>
+    </fieldset>
+}
+<fieldset disabled>
+    <legend>System Information</legend>
+    <dl>
+        <dt>Version</dt>
+        <dd>@AboutSystem.Version</dd>
+        @if (this.User.Identity != null)
+        {
+            <dt>Username</dt>
+            <dd>@this.User.Identity.Name</dd>
+            <dt>Name</dt>
+            <dd>@this.User.FindFirst(ClaimTypes.Name)?.Value</dd>
+            <dt>Email</dt>
+            <dd>@this.User.FindFirst(ClaimTypes.Email)?.Value</dd>
+        }
+        @if (superAdministrator)
+        {
+            <dt>User Authenticated</dt>
+            <dd>@this.User.Identity?.IsAuthenticated.ToYesNo()</dd>
+            <dt>Authentication Type</dt>
+            <dd>@this.User.Identity?.AuthenticationType</dd>
+            @if (this.User.Identity is ClaimsIdentity claimsIdentity)
+            {
+                var roles = claimsIdentity
+                    .FindAll(c => c.Type == claimsIdentity.RoleClaimType && c.Issuer == "LOCAL AUTHORITY")
+                    .Select(c => c.Value).ToList();
+                if (roles.Any())
+                {
+                    <dt>User Roles</dt>
+                    <dd>@string.Join(", ", roles)</dd>
+                }
+            }
+            <dt>Environment</dt>
+            <dd>@environment.EnvironmentName</dd>
+            <dt>Is Production?</dt>
+            <dd>@environment.IsProduction().ToYesNo()</dd>
+            <dt>Is Development?</dt>
+            <dd>@environment.IsDevelopment().ToYesNo()</dd>
+            <dt>Current Server Culture</dt>
+            <dd>@Thread.CurrentThread.CurrentCulture.Name</dd>
+            <dt>Current Server UI Culture</dt>
+            <dd>@Thread.CurrentThread.CurrentUICulture.Name</dd>
+
+            <dt>Server Local Time</dt>
+            <dd>@ApplicationClock.LocalNow</dd>
+            <dt>Server Local Time Zone (Standard)</dt>
+            <dd>@ApplicationClock.LocalTimeZone.StandardName</dd>
+            <dt>Server Local Time Zone (Daylight Saving)</dt>
+            <dd>@(ApplicationClock.LocalTimeZone.DaylightName) @(ApplicationClock.LocalTimeZone.SupportsDaylightSavingTime ? string.Empty : " [Not Supported]")</dd>
+
+            <dt>Application Local Time</dt>
+            <dd>@ApplicationClock.ApplicationNow</dd>
+            <dt>Application Local Time Zone (Standard)</dt>
+            <dd>@ApplicationClock.ApplicationTimeZone.StandardName</dd>
+            <dt>Application Local Time Zone (Daylight Saving)</dt>
+            <dd>@(ApplicationClock.ApplicationTimeZone.DaylightName) @(ApplicationClock.ApplicationTimeZone.SupportsDaylightSavingTime ? string.Empty : " [Not Supported]")</dd>
+
+            <dt>User Local Time</dt>
+            <dd>@ApplicationClock.UtcNow.ToUserDateTimeFromUtc(this.User)</dd>
+            <dt>User Local Time Zone (Standard)</dt>
+            <dd>@this.User.GetUserTimeZone().StandardName</dd>
+            <dt>User Local Time Zone (Daylight Saving)</dt>
+            <dd>@(this.User.GetUserTimeZone().DaylightName) @(this.User.GetUserTimeZone().SupportsDaylightSavingTime ? string.Empty : " [Not Supported]")</dd>
+        }
+    </dl>
+</fieldset>
+<partial name="_Technical"/>

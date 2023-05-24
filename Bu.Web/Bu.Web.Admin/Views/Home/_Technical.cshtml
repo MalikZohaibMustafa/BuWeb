@@ -1,0 +1,63 @@
+﻿@inject IAuthorizationService AuthorizationService
+@{
+    bool superAdministrator = (await this.AuthorizationService.AuthorizeAsync(this.User, nameof(AuthorizationPolicies.SuperAdministrator))).Succeeded;
+}
+@if (superAdministrator)
+{
+    <div class="row g-3 mb-3">
+        <div class="col-md-4 col-xl-3">
+            <a href="~/Home/@nameof(HomeController.TestException)" class="btn btn-secondary w-100" target="_blank">Test Exception - GET <i class="bi bi-box-arrow-up-right"></i></a>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <form method="post" asp-action="TestExceptionPost">
+                <button type="submit" class="btn btn-secondary w-100">Test Exception - POST</button>
+            </form>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <a href="~/NoSuchPage.html" class="btn btn-secondary w-100" target="_blank">Test 404 - GET <i class="bi bi-box-arrow-up-right"></i></a>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <form method="post" action="~/NoSuchPage.html">
+                <button type="submit" class="btn btn-secondary w-100">Test 404 - POST</button>
+            </form>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <a asp-action="TestUnauthorisedRole" class="btn btn-secondary w-100" target="_blank">Test Unauthorised Role - GET <i class="bi bi-box-arrow-up-right"></i></a>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <form method="post" asp-action="TestUnauthorisedRole">
+                <button type="submit" class="btn btn-secondary w-100">Test Unauthorised Role - POST</button>
+            </form>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <a asp-action="HttpHeadOnlyMethod" class="btn btn-secondary w-100" target="_blank">Test Wrong HTTP Method <i class="bi bi-box-arrow-up-right"></i></a>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <a asp-action="NullReturn" class="btn btn-secondary w-100" target="_blank">Test Null Return <i class="bi bi-box-arrow-up-right"></i></a>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <a asp-action="TestLogCritical" class="btn btn-secondary w-100">Test Log Critical</a>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <a asp-action="TestLogError" class="btn btn-secondary w-100">Test Log Error</a>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <a asp-action="TestLogException" class="btn btn-secondary w-100">Test Log Exception</a>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <a asp-action="TestLogWarning" class="btn btn-secondary w-100">Test Log Warning</a>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <a asp-action="TestLogInformation" class="btn btn-secondary w-100">Test Log Information</a>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <a asp-action="TestLogDebug" class="btn btn-secondary w-100">Test Log Debug</a>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <a asp-action="TestLogTrace" class="btn btn-secondary w-100">Test Log Trace</a>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <a asp-area="Admin" asp-controller="EventLogs" asp-action="Index" class="btn btn-secondary w-100" target="_blank">Event Logs</a>
+        </div>
+    </div>
+}

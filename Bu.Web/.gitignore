@@ -1,0 +1,7 @@
+*.dbmdl
+*.jfm
+*.user
+*.suo
+*/.vs/
+*/bin/
+*/obj/

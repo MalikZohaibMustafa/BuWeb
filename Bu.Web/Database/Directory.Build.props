@@ -1,0 +1,2 @@
+<Project Condition="'$(MSBuildProjectExtension)' == '.csproj'">
+</Project>

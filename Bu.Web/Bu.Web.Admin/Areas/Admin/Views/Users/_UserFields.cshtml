@@ -1,0 +1,134 @@
+﻿@model Bu.Web.Admin.Areas.Admin.Models.Users.UserInputModel
+@inject IAdminFixedContext AdminFixedContext
+
+<input asp-for="UserId" type="hidden"/>
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="Name" class="col-md-12 col-lg-3 col-xl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xl-10">
+                <input asp-for="Name" class="form-control" autofocus>
+                <span asp-validation-for="Name"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="Email" class="col-md-12 col-lg-3 col-xl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xl-10">
+                <input asp-for="Email" class="form-control">
+                <span asp-validation-for="Email"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="MobileNo" class="col-md-12 col-lg-3 col-xl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xl-10">
+                <input asp-for="MobileNo" class="form-control">
+                <span asp-validation-for="MobileNo"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="PhoneNo" class="col-md-12 col-lg-3 col-xl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xl-10">
+                <input asp-for="PhoneNo" class="form-control">
+                <span asp-validation-for="PhoneNo"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="DepartmentId" class="col-md-12 col-lg-3 col-xl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xl-10">
+                <select asp-for="DepartmentId" class="form-select" asp-items="@this.AdminFixedContext.GetDepartments(INamedEntity.Names.Alias, INamedEntity.Names.Alias, null, true)"></select>
+                <span asp-validation-for="DepartmentId"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="ExpiryDateUser" class="col-md-12 col-lg-3 col-xl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xl-10">
+                <input asp-for="ExpiryDateUser" class="form-control">
+                <span asp-validation-for="ExpiryDateUser"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="Status" class="col-md-12 col-lg-3 col-xl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xl-10">
+                <select asp-for="Status" class="form-select" asp-items="@this.Html.GetEnumSelectList<Bu.Web.Data.Entities.User.Statuses>()"></select>
+                <span asp-validation-for="Status"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<table class="table table-sm table-bordered table-striped mt-3">
+    <thead>
+    <tr>
+        <th>Role</th>
+        <th>Expiry Date</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" asp-for="SuperAdministrator">
+                <label class="form-check-label" asp-for="SuperAdministrator">
+                    @UserRole.Roles.SuperAdministrator.GetDescription()
+                </label>
+            </div>
+        </td>
+        <td>
+            <input asp-for="SuperAdministratorExpiryDateUser" class="form-control form-control-sm"/>
+            <span asp-validation-for="SuperAdministratorExpiryDateUser"></span>
+        </td>
+        <td>
+            <select asp-for="SuperAdministratorStatus" class="form-select form-select-sm" asp-items="@this.AdminFixedContext.GetListItems<UserRole.Statuses>(true)"></select>
+            <span asp-validation-for="SuperAdministratorStatus"></span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" asp-for="Administrator">
+                <label class="form-check-label" asp-for="Administrator">
+                    @UserRole.Roles.Administrator.GetDescription()
+                </label>
+            </div>
+        </td>
+        <td>
+            <input asp-for="AdministratorExpiryDateUser" class="form-control form-control-sm"/>
+            <span asp-validation-for="AdministratorExpiryDateUser"></span>
+        </td>
+        <td>
+            <select asp-for="AdministratorStatus" class="form-select form-select-sm" asp-items="@this.AdminFixedContext.GetListItems<UserRole.Statuses>(true)"></select>
+            <span asp-validation-for="AdministratorStatus"></span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" asp-for="Webmaster">
+                <label class="form-check-label" asp-for="Webmaster">
+                    @UserRole.Roles.Webmaster.GetDescription()
+                </label>
+            </div>
+        </td>
+        <td>
+            <input asp-for="WebmasterExpiryDateUser" class="form-control form-control-sm"/>
+            <span asp-validation-for="WebmasterExpiryDateUser"></span>
+        </td>
+        <td>
+            <select asp-for="WebmasterStatus" class="form-select form-select-sm" asp-items="@this.AdminFixedContext.GetListItems<UserRole.Statuses>(true)"></select>
+            <span asp-validation-for="WebmasterStatus"></span>
+        </td>
+    </tr>
+    </tbody>
+</table>

@@ -1,0 +1,60 @@
+﻿@model ArticleDetail
+
+@(this.Html.RenderBootstrapTable(null, new BootstrapTable<ArticlePage>(this.Model.GetSortedArticlePages().ToList())
+{
+    Caption = @<caption>Article Pages</caption>,
+    Head = @<tr>
+               @if (!this.Model.Published.IsPublished)
+               {
+                   <th>Actions</th>
+               }
+               <th>@this.Html.DisplayNameForInnerType((ArticlePage page) => page.PageTitle)</th>
+               <th>@this.Html.DisplayNameForInnerType((ArticlePage page) => page.PageUniqueId)</th>
+               <th>@this.Html.DisplayNameForInnerType((ArticlePage page) => page.ParentArticlePageId)</th>
+               <th>Default</th>
+           </tr>,
+    Body = @<tr>
+               @if (!item.Data.ArticleDetail!.Published.IsPublished)
+               {
+                   <td>
+                       <a class="btn-sm btn btn-secondary" title="Edit" asp-area="Articles" asp-controller="Page" asp-action="Edit" asp-route-articleDetailId="@item.Data.ArticleDetailId" asp-route-articlePageId="@item.Data.ArticlePageId">
+                           <i class="bi bi-pencil"></i>
+                       </a>
+                       <a class="btn-sm btn btn-danger" title="Delete" asp-area="Articles" asp-controller="Page" asp-action="Delete" asp-route-articleDetailId="@item.Data.ArticleDetailId" asp-route-articlePageId="@item.Data.ArticlePageId">
+                           <i class="bi bi-trash"></i>
+                       </a>
+                       <form class="d-inline" method="post">
+                           @if (item.Data.PageSequence > 0)
+                           {
+                               <button type="submit" class="btn btn-sm btn-secondary" title="Move Up" asp-area="Articles" asp-controller="Page" asp-action="MoveUp" asp-route-articleDetailId="@item.Data.ArticleDetailId" asp-route-articlePageId="@item.Data.ArticlePageId">
+                                   <i class="bi bi-chevron-bar-up"></i>
+                               </button>
+                           }
+                           @if (item.Data.PageSequence < this.Model.ArticlePages!.Where(ap => ap.ParentArticlePageId == item.Data.ParentArticlePageId).Max(ap => ap.PageSequence))
+                           {
+                               <button typze="submit" class="btn btn-sm btn-secondary" title="Move Down" asp-area="Articles" asp-controller="Page" asp-action="MoveDown" asp-route-articleDetailId="@item.Data.ArticleDetailId" asp-route-articlePageId="@item.Data.ArticlePageId">
+                                   <i class="bi bi-chevron-bar-down"></i>
+                               </button>
+                           }
+                       </form>
+                   </td>
+               }
+               <td>
+                   <a asp-area="Articles" asp-controller="Page" asp-action="Display" asp-route-articleDetailId="@item.Data.ArticleDetailId" asp-route-articlePageId="@item.Data.ArticlePageId">
+                       @item.Data.PageTitle
+                   </a>
+               </td>
+               <td>
+                   @item.Data.PageUniqueId
+               </td>
+               <td>
+                   @item.Data.ParentArticlePage?.PageTitle
+               </td>
+               <td>
+                   @((item.Data.ArticleDetail!.DefaultArticlePageId == @item.Data.ArticlePageId).ToYesNo())
+               </td>
+           </tr>,
+    EmptyRow = @<tr>
+                   <td colspan="5">No record found.</td>
+               </tr>,
+}))

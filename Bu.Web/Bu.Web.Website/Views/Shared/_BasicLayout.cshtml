@@ -1,0 +1,28 @@
+﻿@{
+    Layout = "_EmptyLayout";
+}
+
+@section Head
+{
+    <link type="text/css" rel="stylesheet" href="~/css/site.min.css">
+    @await RenderSectionAsync("Head", required: false)
+}
+
+<div basic-layout-container class="d-flex flex-column vh-100">
+    <div basic-layout-header class="flex-grow-0 flex-shrink-0">
+        @await RenderSectionAsync("Header", true)
+    </div>
+    <div basic-layout-body class="flex-grow-1">
+        @RenderBody()
+    </div>
+    <div basic-layout-footer class="flex-grow-0 d-flex justify-content-center align-items-center p-2 text-light small">
+        <span>
+            &copy; @DateTime.Now.Year Bahria University
+        </span>
+    </div>
+</div>
+
+@section Scripts
+{
+    @await RenderSectionAsync("Scripts", required: false)
+}

@@ -1,0 +1,87 @@
+﻿@inject IWebsiteFixedContext FixedContext
+@{
+    Layout = "_BasicLayout";
+    IEnumerable<Link> LeftSideFooterLinks = new[]
+    {
+        new Link()
+        {
+            InnerHtml = "Eligibility Criteria",
+            NavigateUrl = "#",
+        },
+        new Link()
+        {
+            InnerHtml = "Computer Based test subjects",
+            NavigateUrl = "~/Home",
+        },
+        new Link()
+        {
+            InnerHtml = "Academic Calendar",
+            NavigateUrl = "~/Home",
+        },
+        new Link()
+        {
+            InnerHtml = "Prospectus",
+            NavigateUrl = "~/Home",
+        },
+        new Link()
+        {
+            InnerHtml = "Student Handbook",
+            NavigateUrl = "~/Home",
+        },
+    };
+
+    IEnumerable<Link> RightSideFooterLinks = this.FixedContext.InstitutesList.Where(i => i.InstituteId != 0 && i.Status == Institute.Statuses.Active)
+        .OrderBy(i => i.InstituteId)
+        .Select(i => new Link
+        {
+            InnerHtml = i.ShortName.HtmlEncode() ?? string.Empty,
+            LinkTarget = LinkTargets.Blank,
+            NavigateUrl = this.FixedContext.GetRootArea(i.InstituteId).AreaPathWithTilde,
+        }).ToList();
+
+    Func<(IEnumerable<Link> Links, string HeaderHtml), IHtmlContent> RenderLinks =
+        @<div class="py-3">
+            <h5>@this.Html.Raw(item.HeaderHtml)</h5>
+            <div class="list-group list-group-flush">
+                @foreach (var link in item.Links)
+                {
+                    <a class="list-group-item border-light px-0 list-group-item-action bg-transparent text-light" href="@Href(link.NavigateUrl)" target="@link.Target">@Html.Raw((string)link.InnerHtml)</a>
+                }
+            </div>
+        </div>;
+}
+
+@section Head
+{
+    @await RenderSectionAsync("Head", required: false)
+}
+
+@section Header
+{
+    @await Html.PartialAsync("_TopBarLinks", BuData.TopBarLinks)
+    @await Html.PartialAsync("_LogoBar", BuData.LogoBar)
+    @await Html.PartialAsync("_TopMainMenuBar", BuData.MainMenuLinks)
+    @await RenderSectionAsync("Header", required: false)
+}
+
+<div class="d-flex flex-column h-100">
+    <div class="flex-grow-1">
+        @RenderBody()
+    </div>
+    <div bu-layout-footer class="flex-xl-grow-0 bg-dark text-light px-4 py-2">
+        @await RenderSectionAsync("Footer", required: false)
+        <div class="row bg-transparent pt-3">
+            <div class="col-md-5">
+                @RenderLinks((LeftSideFooterLinks, "Useful Links"))
+            </div>
+            <div class="offset-md-2 col-md-5">
+                @RenderLinks((RightSideFooterLinks,"Campuses"))
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @await RenderSectionAsync("Scripts", required: false)
+}

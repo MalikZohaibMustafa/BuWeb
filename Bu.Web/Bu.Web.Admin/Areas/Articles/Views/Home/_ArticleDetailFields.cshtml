@@ -1,0 +1,132 @@
+﻿@model ArticleDetail
+@inject IAdminFixedContext AdminFixedContext
+@inject IAdminCachedContext AdminCachedContext
+@{
+    bool newArticle = this.Model.ArticleId == default && this.Model.ArticleDetailId == default;
+    bool published = this.Model.ArticleId != default && this.Model.ArticleDetailId != default && this.Model.Published.IsPublished;
+    bool readOnly = published;
+    bool disabled = published;
+}
+
+<input asp-for="ArticleDetailId" type="hidden" />
+<input asp-for="ArticleId" type="hidden" />
+<input asp-for="PreviousArticleDetailId" type="hidden" />
+<div class="row mb-3">
+    <div class="col-md-6">
+        <div class="form-floating">
+            <select disabled="@disabled" asp-for="ArticleType" class="form-select" asp-items="@this.AdminFixedContext.GetListItems<ArticleDetail.ArticleTypes>(true)"></select>
+            <label asp-for="ArticleType"></label>
+            <span asp-validation-for="ArticleType"></span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-floating">
+            <select disabled="@disabled" asp-for="AreaLayoutId" class="form-select" asp-items="@this.AdminFixedContext.GetAreaLayouts(INamedEntity.Names.Name, true)"></select>
+            <label asp-for="AreaLayoutId"></label>
+            <span asp-validation-for="AreaLayoutId"></span>
+        </div>
+    </div>
+</div>
+<div class="form-floating mb-3">
+    <input readonly="@readOnly" asp-for="ArticleName" class="form-control">
+    <label asp-for="ArticleName"></label>
+    <span asp-validation-for="ArticleName"></span>
+</div>
+<div class="form-floating mb-3">
+    <input readonly="@readOnly" asp-for="ArticleUniqueId" class="form-control">
+    <label asp-for="ArticleUniqueId"></label>
+    <span asp-validation-for="ArticleUniqueId"></span>
+</div>
+<div class="row mb-3">
+    <div class="col-md-6">
+        <div class="form-floating">
+            <input readonly="@readOnly" asp-for="ExpiryDateUser" class="form-control">
+            <label asp-for="ExpiryDateUser"></label>
+            <span asp-validation-for="ExpiryDateUser"></span>
+        </div>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-md-6">
+        <div class="form-floating">
+            <input readonly="@readOnly" asp-for="EventStartDate" class="form-control">
+            <label asp-for="EventStartDate"></label>
+            <span asp-validation-for="EventStartDate"></span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-floating">
+            <input readonly="@readOnly" asp-for="EventEndDate" class="form-control">
+            <label asp-for="EventEndDate"></label>
+            <span asp-validation-for="EventEndDate"></span>
+        </div>
+    </div>
+</div>
+@if (!newArticle)
+{
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <div class="form-floating">
+                <select disabled="@disabled" asp-for="DefaultArticlePageId" class="form-select" asp-items="@this.Model.ArticlePages!.ToSelectListItems(INamedEntity.Names.Name, true)"></select>
+                <label asp-for="DefaultArticlePageId"></label>
+                <span asp-validation-for="DefaultArticlePageId"></span>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="form-floating">
+                <select disabled="@disabled" asp-for="CarouselArticleMediaId" class="form-select" asp-items="@this.Model.ArticleMedias!.ToSelectListItems(INamedEntity.Names.Name, true)"></select>
+                <label asp-for="CarouselArticleMediaId"></label>
+                <span asp-validation-for="CarouselArticleMediaId"></span>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="form-floating">
+                <select disabled="@disabled" asp-for="SmallCarouselArticleMediaId" class="form-select" asp-items="@this.Model.ArticleMedias!.ToSelectListItems(INamedEntity.Names.Name, true)"></select>
+                <label asp-for="SmallCarouselArticleMediaId"></label>
+                <span asp-validation-for="SmallCarouselArticleMediaId"></span>
+            </div>
+        </div>
+    </div>
+}
+<div class="form-floating mb-3">
+    <textarea readonly="@readOnly" row="3" asp-for="ArticleShortDescription" class="form-control"></textarea>
+    <label asp-for="ArticleShortDescription"></label>
+    <span asp-validation-for="ArticleShortDescription"></span>
+</div>
+<div class="form-floating mb-3">
+    <textarea readonly="@readOnly" row="3" asp-for="Remarks" class="form-control"></textarea>
+    <label asp-for="Remarks"></label>
+    <span asp-validation-for="Remarks"></span>
+</div>
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <div class="form-floating">
+            <select disabled asp-for="Status" class="form-select" asp-items="@this.AdminFixedContext.GetListItems<IPublished.Statuses>(true)"></select>
+            <label asp-for="Status"></label>
+        </div>
+    </div>
+    @if (this.Model.Published.IsPublished)
+    {
+        <div class="col-md-6 mb-3">
+            <div class="form-floating">
+                <input disabled asp-for="PublishedByUserId" type="text" value="@this.AdminCachedContext.GetUserInfo(this.Model.PublishedByUserId, this.Model.PublishedOnUser)" readonly class="form-control">
+                <label asp-for="PublishedByUserId"></label>
+            </div>
+        </div>
+    }
+    @if (!newArticle)
+    {
+        <div class="col-md-6 mb-3">
+            <div class="form-floating">
+                <input disabled asp-for="CreatedByUserId" type="text" value="@this.AdminCachedContext.GetUserInfo(this.Model.CreatedByUserId, this.Model.CreatedOnUser)" readonly class="form-control">
+                <label asp-for="CreatedByUserId"></label>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="form-floating">
+                <input disabled asp-for="LastUpdatedByUserId" type="text" value="@this.AdminCachedContext.GetUserInfo(this.Model.LastUpdatedByUserId, this.Model.LastUpdatedOnUser)" readonly class="form-control">
+                <label asp-for="LastUpdatedByUserId"></label>
+            </div>
+        </div>
+    }
+</div>

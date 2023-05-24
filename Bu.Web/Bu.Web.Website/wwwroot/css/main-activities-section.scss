@@ -1,0 +1,46 @@
+﻿.activities-wrapper {
+    padding: 18px 35px;
+    position: relative;
+}
+
+.newsBox {
+    background: white;
+    padding: 20px 10px;
+    border-radius: 4px;
+    max-height: 460px !important;
+    overflow-y: scroll;
+
+    h6 {
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    &::-webkit-scrollbar {
+        width: 14px;
+        height: 18px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        height: 20px;
+        border: 4px solid rgba(0, 0, 0, 0);
+        background-clip: padding-box;
+        border-radius: 4px;
+        content: 'aaa';
+        background-size: 7px 12px;
+        background: #2F485C url('~src/assets/svgs/scrollbar-icon.svg') no-repeat center;
+    }
+
+    &::-webkit-scrollbar-button {
+        width: 0;
+        height: 0;
+        display: none;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #cccccc;
+    }
+
+    &::-webkit-scrollbar-corner {
+        background-color: transparent;
+    }
+}

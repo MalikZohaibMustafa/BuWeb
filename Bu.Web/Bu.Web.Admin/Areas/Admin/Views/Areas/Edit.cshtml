@@ -1,0 +1,15 @@
+﻿@model Area
+@{
+    this.ViewData["Title"] = "Edit Area";
+    this.ViewData["Icon"] = "bi bi-globe";
+}
+
+<form method="post" asp-area="Admin" asp-controller="Areas" asp-action="Update" asp-route-id="@this.Model.AreaId">
+    <fieldset>
+        <partial name="_AreaFields" model="@this.Model"/>
+    </fieldset>
+    <div class="mt-3 col text-center">
+        <button type="submit" class="btn btn-primary" disabled="@(this.Model.ParentAreaId == null)">Save</button>
+        <a asp-action="Index" asp-controller="Areas" asp-area="Admin" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

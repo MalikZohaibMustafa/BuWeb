@@ -1,0 +1,27 @@
+﻿@{
+    Layout = "_BuLayout";
+}
+
+@section Head
+{
+    @await RenderSectionAsync("Head", required: false)
+}
+
+@section Header
+{
+    @await RenderSectionAsync("Header", required: false)
+}
+
+<div bu-left-menu-layout-container class="row">
+    <div bu-left-menu-layout-menu class="side-menu col-md-3 col-xl-2">
+        @await RenderSectionAsync("LeftMenu", required: true)
+    </div>
+    <div bu-left-menu-layout-body class="side-menu col-md-9 col-xl-10">
+        @RenderBody()
+    </div>
+</div>
+
+@section Scripts
+{
+    @await RenderSectionAsync("Scripts", required: false)
+}

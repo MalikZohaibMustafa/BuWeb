@@ -1,0 +1,25 @@
+﻿@{
+    Layout = "_BuRightMenuLayout";
+}
+
+@section Head
+{
+    @await RenderSectionAsync("Head", required: false)
+}
+
+@section Header
+{
+    @await Html.PartialAsync("_TopSecondaryMenuBar", BukcLayoutData.Data.SecondaryMenu)
+}
+
+@section RightMenu
+{
+    @await RenderSectionAsync("RightMenu", required: false)
+}
+
+@RenderBody()
+
+@section Scripts
+{
+    @await RenderSectionAsync("Scripts", required: false)
+}

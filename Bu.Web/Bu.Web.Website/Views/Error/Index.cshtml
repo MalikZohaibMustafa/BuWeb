@@ -1,0 +1,20 @@
+﻿@model ErrorViewModel
+@{
+    this.ViewData["Title"] = "Error Encountered";
+    string subject = "Error Encountered";
+    string body = !string.IsNullOrWhiteSpace(this.Model.RequestId)
+        ? $"Request Id: ${this.Model.RequestId}"
+        : string.Empty;
+}
+
+<div class="h-100 p-5">
+    <h1 class="text-danger">Error Encountered!</h1>
+    <p class="fs-4">There has been an error.</p>
+    <hr class="my-4">
+    <p>
+        If this continues please report it through following contact information,
+        if possible with details of what you were trying to do in the system when the error happened.
+    </p>
+    <partial name="_Contact" model="(subject, body)"/>
+    <partial name="_ErrorDetails" model="((string?)null, (string?)null, this.Model.RequestId)"/>
+</div>

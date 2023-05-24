@@ -1,0 +1,73 @@
+﻿@model ArticleDetail
+@inject IAdminFixedContext AdminFixedContext
+
+<div class="card mb-3">
+    <div class="card-header">Article</div>
+    <div class="card-body">
+        <fieldset disabled class="mb-3">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="row">
+                        <label asp-for="AreaId" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+                        <div class="col-md-12 col-lg-9 col-xxl-10">
+                            <input type="text" value="@this.Model.Area!.Name" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <label asp-for="AreaLayoutId" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+                        <div class="col-md-12 col-lg-9 col-xxl-10">
+                            <input type="text" value="@this.Model.AreaLayout!.Name" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <label asp-for="ArticleName" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+                        <div class="col-md-12 col-lg-9 col-xxl-10">
+                            <input readonly asp-for="ArticleName" class="form-control">
+                            <span asp-validation-for="ArticleName"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <label asp-for="ArticleUniqueId" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+                        <div class="col-md-12 col-lg-9 col-xxl-10">
+                            <input readonly asp-for="ArticleUniqueId" class="form-control">
+                            <span asp-validation-for="ArticleUniqueId"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <label asp-for="ArticleType" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+                        <div class="col-md-12 col-lg-9 col-xxl-10">
+                            <select disabled asp-for="ArticleType" class="form-select" asp-items="@this.AdminFixedContext.GetListItems<ArticleDetail.ArticleTypes>(true)"></select>
+                            <span asp-validation-for="ArticleType"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <label asp-for="ExpiryDateUser" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+                        <div class="col-md-12 col-lg-9 col-xxl-10">
+                            <input readonly asp-for="ExpiryDateUser" class="form-control">
+                            <span asp-validation-for="ExpiryDateUser"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <label asp-for="Status" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+                        <div class="col-md-12 col-lg-9 col-xxl-10">
+                            <select disabled asp-for="Status" class="form-select" asp-items="@this.AdminFixedContext.GetListItems<ArticleDetail.ArticleTypes>(true)"></select>
+                            <span asp-validation-for="Status"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>

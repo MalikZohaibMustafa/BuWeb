@@ -1,0 +1,131 @@
+﻿@model Area
+@inject IWebsiteCachedContext CachedContext
+@{
+    List<IEnumerable<YoutubeVideo>> youtubeVideosBatches = this.CachedContext.AreaYoutubeVideosLookup[this.Model.AreaId].Batch(4).ToList();
+    List<IEnumerable<EventDetail>> eventDetailBatches = this.CachedContext.AreaEventDetailsLookup[this.Model.AreaId].Batch(1).ToList();
+    List<IEnumerable<NewsOrTenderDetail>> newsOrTenderBatches = this.CachedContext.AreaNewsLookup[this.Model.AreaId].Batch(2).ToList();
+}
+<div class="row p-3 bg-secondary bg-opacity-10">
+    <div class="col-md-8">
+        <h4 class="line-bottom text-uppercase m-0">Activities & Announcements</h4>
+        <div class="row">
+            <div class="col-md">
+                <div class="text-end">
+                    <div class="btn-group btn-group-sm mb-1" role="group">
+                        <button type="button" class="btn btn-light" title="Previous" data-bs-target="#videosCarousel" data-bs-slide="prev">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button type="button" class="btn btn-light" title="Next" data-bs-target="#videosCarousel" data-bs-slide="next">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="carousel slide col-md" data-bs-ride="true" id="videosCarousel">
+                    <div class="carousel-inner">
+                        @foreach (IEnumerable<YoutubeVideo> youtubeVideoBatch in youtubeVideosBatches)
+                        {
+                            <div class="carousel-item w-100@(youtubeVideoBatch == youtubeVideosBatches.First() ? " active" : "")">
+                                <div class="row row-cols-2 g-2">
+                                    @foreach (YoutubeVideo youtubeVideo in youtubeVideoBatch)
+                                    {
+                                        <div class="col">
+                                            <div class="ratio ratio-4x3">
+                                                <iframe src="@youtubeVideo.YoutubeUrl" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border: 0 none;"></iframe>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="text-end">
+                    <div class="btn-group btn-group-sm mb-1" role="group">
+                        <button type="button" class="btn btn-light" title="Previous" data-bs-target="#eventsCarousel" data-bs-slide="prev">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button type="button" class="btn btn-light" title="Next" data-bs-target="#eventsCarousel" data-bs-slide="next">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="carousel slide col-md" data-bs-ride="true" id="eventsCarousel">
+                    <div class="carousel-inner">
+                        @foreach (IEnumerable<EventDetail> eventDetailBatch in eventDetailBatches)
+                        {
+                            <div class="carousel-item w-100@(eventDetailBatch == eventDetailBatches.First() ? " active" : "")">
+                                @foreach (EventDetail eventDetail in eventDetailBatch)
+                                {
+                                    <div class="card">
+                                        <img class="card-img-top" src="@this.Url.Content(eventDetail.SmallCarouselUrl)" alt="@eventDetail.ArticleName">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-start">
+                                                <div>
+                                                    <div class="card bg-dark text-bg-dark text-center">
+                                                        <div class="card-header text-uppercase py-0 px-2">@eventDetail.StartDate?.ToString("MMM")</div>
+                                                        <div class="card-body py-0 px-1">
+                                                            <h5 class="card-title">@eventDetail.StartDate?.ToString("dd")</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <h5 class="px-2 py-0 mt-0 text-decoration-none">@eventDetail.ArticleName</h5>
+                                            </div>
+                                            <p class="text-decoration-none">eventDetail.ShortDescription</p>
+                                            <small>
+                                                <a href="@this.Url.Content(eventDetail.ArticleUrl)">Read more...</a>
+                                            </small>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h4 class="line-bottom text-uppercase m-0">News</h4>
+        <div class="row">
+            <div class="col-md">
+                <div class="text-end">
+                    <div class="btn-group btn-group-sm mb-1" role="group">
+                        <button type="button" class="btn btn-light" title="Previous" data-bs-target="#newsCarousel" data-bs-slide="prev">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button type="button" class="btn btn-light" title="Next" data-bs-target="#newsCarousel" data-bs-slide="next">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="carousel slide col-md" data-bs-ride="true" id="newsCarousel">
+                    <div class="carousel-inner">
+                        @{
+                            bool alternate = true;
+                        }
+                        @foreach (IEnumerable<NewsOrTenderDetail> newsOrTenderBatch in newsOrTenderBatches)
+                        {
+                            <div class="carousel-item w-100@(newsOrTenderBatch == newsOrTenderBatches.First() ? " active" : "")">
+                                @foreach (NewsOrTenderDetail newsOrTender in newsOrTenderBatch)
+                                {
+                                    alternate = !alternate;
+                                    <div class="border-info rounded-0 border border-5 border-top-0 border-bottom-0 @(alternate ? "border-start-0" : "border-end-0") mb-3">
+                                        <div class="card rounded-0 border border-1 @(alternate ? "border-end-0" : "border-start-0")">
+                                            <div class="card-body">
+                                                <h5 class="card-title">@newsOrTender.ArticleName</h5>
+                                                <p class="card-text">@newsOrTender.ArticleShortDescription</p>
+                                                <a href="#" class="card-link">Read more</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

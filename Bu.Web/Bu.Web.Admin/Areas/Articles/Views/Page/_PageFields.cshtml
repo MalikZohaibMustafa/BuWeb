@@ -1,0 +1,82 @@
+﻿@model ArticlePage
+@inject IAdminCachedContext AdminCachedContext
+@inject IAdminFixedContext AdminFixedContext
+@{
+    bool published = this.Model.ArticleDetail!.Published.IsPublished;
+    bool readOnly = published;
+    bool disabled = published;
+}
+
+<input asp-for="ArticleDetailId" type="hidden" />
+<input asp-for="ArticlePageId" type="hidden" />
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="ParentArticlePageId" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xxl-10">
+                <select disabled="@disabled" asp-for="ParentArticlePageId" class="form-select" autofocus asp-items="@this.Model.ArticleDetail.ArticlePages!.Where(p => p.ArticlePageId != this.Model.ArticlePageId).ToSelectListItems(INamedEntity.Names.Name, true)"></select>
+                <span asp-validation-for="ParentArticlePageId"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="PageTitle" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xxl-10">
+                <input readonly="@readOnly" asp-for="PageTitle" class="form-control">
+                <span asp-validation-for="PageTitle"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="PageUniqueId" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xxl-10">
+                <input readonly="@readOnly" asp-for="PageUniqueId" class="form-control">
+                <span asp-validation-for="PageUniqueId"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="MenuText" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xxl-10">
+                <input readonly="@readOnly" asp-for="MenuText" class="form-control">
+                <span asp-validation-for="MenuText"></span>
+            </div>
+        </div>
+    </div>
+    @if (this.Model.ArticlePageId != default)
+    {
+        <div class="col-md-6">
+            <div class="row">
+                <label asp-for="CreatedByUserId" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+                <div class="col-md-12 col-lg-9 col-xxl-10">
+                    <input type="text" readonly asp-for="CreatedByUserId" value="@this.AdminCachedContext.GetUserInfo(this.Model.CreatedByUserId, this.Model.CreatedOnUser)" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label asp-for="LastUpdatedByUserId" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+                <div class="col-md-12 col-lg-9 col-xxl-10">
+                    <input type="text" readonly asp-for="LastUpdatedByUserId" value="@this.AdminCachedContext.GetUserInfo(this.Model.LastUpdatedByUserId, this.Model.LastUpdatedOnUser)" class="form-control">
+                </div>
+            </div>
+        </div>
+    }
+    <div class="col-md-6">
+        <div class="row">
+            <label asp-for="PageBodyTextFormat" class="col-md-12 col-lg-3 col-xxl-2 col-form-label"></label>
+            <div class="col-md-12 col-lg-9 col-xxl-10">
+                <select disabled="@disabled" asp-for="PageBodyTextFormat" class="form-select" autofocus asp-items="@this.AdminFixedContext.GetListItems<RichTextFormats>(true)"></select>
+                <span asp-validation-for="PageBodyTextFormat"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <label asp-for="PageBody"></label>
+        <textarea readonly="@readOnly" rows="25" asp-for="PageBody" class="form-control"></textarea>
+        <span asp-validation-for="PageBody"></span>
+    </div>
+</div>

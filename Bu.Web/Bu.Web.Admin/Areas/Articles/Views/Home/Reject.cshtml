@@ -1,0 +1,16 @@
+﻿@model ArticleDetail
+@{
+    this.ViewData["Title"] = "Reject Article";
+    this.ViewData["Icon"] = "bi bi-journal";
+}
+
+<form method="post" asp-area="Articles" asp-controller="Home" asp-action="RejectPost">
+    <input asp-for="ArticleDetailId" type="hidden"/>
+    <fieldset disabled>
+        <partial name="_ArticleDetailFields" model="@this.Model"/>
+    </fieldset>
+    <div class="mt-3 col text-center">
+        <button type="submit" class="btn btn-danger">Reject</button>
+        <a asp-action="Display" asp-controller="Home" asp-area="Articles" asp-route-id="@this.Model.ArticleDetailId" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

@@ -1,0 +1,33 @@
+﻿@model Area
+@if (this.Model.ParentAreaId == null)
+{
+    <style type="text/css">
+        .documentary {
+            background-image: url(@this.Url.Content("~/images/bg-images/Documentary.png"));
+            background-position: 50% 50%;
+            position: relative;
+            background-size: cover;
+        }
+
+            .documentary::before {
+                background-color: rgba(18, 31, 39, 0.9) !important;
+                content: " ";
+                height: 100%;
+                width: 100%;
+                left: 0;
+                top: 0;
+                z-index: 1;
+                position: absolute;
+            }
+    </style>
+    <div class="documentary p-5">
+        <div class="row justify-content-md-center z-1 position-relative">
+            <div class="col-md-3">
+                <div class="ratio ratio-4x3">
+                    <iframe src="https://www.youtube.com/embed/qTfoMGNzrck" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" id="fitvid6"></iframe>
+                </div>
+            </div>
+            <div class="col-md text-light h1">DOCUMENTARY AT<br />BU@GLANCE</div>
+        </div>
+    </div>
+}

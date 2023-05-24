@@ -1,0 +1,156 @@
+﻿@inject IAuthorizationService AuthorizationService
+@{
+    string? title = this.ViewData["Title"] as string;
+    string? icon = this.ViewData["Icon"] as string;
+    bool? pageTitleVisible = this.ViewData["PageTitleVisible"] as bool?;
+    if (string.IsNullOrWhiteSpace(title))
+    {
+        title = null;
+    }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(title != null ? $"{title} - " : string.Empty) @AboutSystem.SystemName - Bahria University</title>
+    <link rel="stylesheet" href="~/lib/bootswatch/spacelab/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="d-flex flex-column vh-100 m-0 p-0">
+    <header class="flex-grow-0 min-h-60">
+        <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark border-bottom h-60" role="navigation">
+            <div class="container-fluid">
+                <a class="navbar-brand me-3" asp-area="" asp-controller="Home" asp-action="Index">
+                    <span class="d-sm-inline d-lg-none">@AboutSystem.SmallSystemName</span>
+                    <span class="d-none d-lg-inline">@AboutSystem.SystemName</span>
+                </a>
+                @if (this.User.FindFirst(nameof(UserRole.UserId)) != null)
+                {
+                    var webmaster = (await this.AuthorizationService.AuthorizeAsync(this.User, nameof(AuthorizationPolicies.Webmaster))).Succeeded;
+                    var superAdministrator = (await this.AuthorizationService.AuthorizeAsync(this.User, nameof(AuthorizationPolicies.SuperAdministrator))).Succeeded;
+                    <button class="navbar-toggler" id="navbarToggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse">
+                        <ul class="navbar-nav w-100 justify-content-start">
+                            @if (webmaster)
+                            {
+                                <li class="nav-item me-1 dropdown">
+                                    <a class="nav-link text-center" href="#" id="navbarArticles" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-gear"></i>
+                                        <span class="d-md-block d-lg-inline">Articles</span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarArticles">
+                                        <li>
+                                            <a class="dropdown-item" asp-area="Articles" asp-controller="Home" asp-action="Index">Articles</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+                            @if (superAdministrator || webmaster)
+                            {
+                                <li class="nav-item me-1 dropdown">
+                                    <a class="nav-link text-center" href="#" id="navbarAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-gear"></i>
+                                        <span class="d-md-block d-lg-inline">Admin</span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarAdmin">
+                                        <li>
+                                            <a class="dropdown-item" asp-area="Admin" asp-controller="EventLogs" asp-action="Index">Event Logs</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Index">Users</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" asp-area="Admin" asp-controller="Firewall" asp-action="Index">Firewall</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" asp-area="Admin" asp-controller="Areas" asp-action="Index">Areas</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
+                        <hr class="d-md-none d-lg-block">
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="#" id="navbarAccount" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="d-flex flex-row">
+                                        <img class="align-self-center rounded-circle me-1" src="~/Photo" width="24" height="24" />
+                                        <div class="text-nowrap align-self-center">
+                                            @this.User.Claims.First(c => c.Type == ClaimTypes.Name).Value
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarAccount">
+                                    <li class="d-md-none d-lg-block">
+                                        <div class="text-center p-3">
+                                            <img class="text-center me-1" src="~/Photo" width="100" height="100" />
+                                            <strong class="d-block">
+                                                @this.User.FindFirst(ClaimTypes.Name)!.Value
+                                            </strong>
+                                            <small>@this.User.FindFirst(ClaimTypes.Email)!.Value</small>
+                                        </div>
+                                    </li>
+                                    <li class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="About">
+                                            <i class="bi bi-info-circle"></i>
+                                            About
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">
+                                            <i class="bi bi-box-arrow-right"></i>
+                                            Sign Out
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                }
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid flex-grow-1 d-flex flex-column">
+        <div class="flex-grow-1">
+            @if (title != null && pageTitleVisible != false)
+            {
+                <h2 class="mt-2">
+                    @if (!string.IsNullOrWhiteSpace(icon))
+                    {
+                        <i class="@icon me-2"></i>
+                    }
+                    @title
+                </h2>
+                <hr class="m-0" />
+            }
+            <main role="main" class="py-3">
+                @this.Html.RenderAlerts(BootstrapColorSchemes.Danger)
+                @this.Html.RenderAlerts(BootstrapColorSchemes.Warning)
+                @this.Html.RenderAlerts(BootstrapColorSchemes.Success)
+                @this.Html.RenderAlerts(BootstrapColorSchemes.Info)
+                @RenderBody()
+            </main>
+        </div>
+        <footer class="flex-grow-0 mt-auto py-1 border-top text-muted">
+            <div class="container-fluid">
+                <small>
+                    &copy; @DateTime.Now.Year - <a href="https://bahria.edu.pk/" target="_blank">Bahria University</a>
+                </small>
+            </div>
+        </footer>
+    </div>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validate/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Bu.AspNetCore.Core.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
